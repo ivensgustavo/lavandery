@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Lavandery</string>
+    <string name="login_description">Entre na sua conta e agende a limpeza das suas roupas</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Senha</string>
+    <string name="enter_btn_label">Entrar</string>
+    <string name="alternative_login_label">- Ou entre com -</string>
+    <string name="lavandery">lavandery</string>
+    <string name="google_text">Google</string>
+    <string name="not_have_account_text">Não tem uma conta?</string>
+    <string name="sign_up_link">Cadastre-se</string>
+</resources>
