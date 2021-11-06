@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,6 +15,17 @@ class MainActivity : AppCompatActivity() {
         btnEnter.setOnClickListener {
             val homeIntent = Intent(this, HomeActivity::class.java)
             startActivity(homeIntent)
+        }
+
+        configureSignUpLink()
+    }
+
+    private fun configureSignUpLink() {
+        val signUpLink: TextView = findViewById(R.id.sign_up_link)
+
+        signUpLink.setOnClickListener {
+            val registrationIntent = Intent(this, RegistrationActivity::class.java)
+            startActivity(registrationIntent)
         }
     }
 }

@@ -11,4 +11,11 @@
     <string name="sign_up_link">Cadastre-se</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="registration_description">Crie uma conta, encontre alguém para lavar suas roupas e aproveite melhor o seu tempo.</string>
+    <string name="name_label">Nome</string>
+    <string name="surname_label">Sobrenome</string>
+    <string name="telephone_input_text">Telefone</string>
+    <string name="create_account_label">Criar conta</string>
+    <string name="sign_in_label">Faça login</string>
+    <string name="already_have_an_account">Já tem uma conta?</string>
 </resources>
