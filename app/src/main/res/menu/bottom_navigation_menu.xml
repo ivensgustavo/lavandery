@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home_nav_button"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic_outline_home"
         android:title="Home"/>
 
     <item
         android:id="@+id/my_requests_nav_button"
-        android:icon="@drawable/ic_basket"
+        android:icon="@drawable/ic_outline_basket"
         android:title="Meus pedidos"/>
 
     <item
         android:id="@+id/settings_nav_button"
-        android:icon="@drawable/ic_baseline_settings"
+        android:icon="@drawable/ic_outline_settings"
         android:title="Configurações"/>
 </menu>
