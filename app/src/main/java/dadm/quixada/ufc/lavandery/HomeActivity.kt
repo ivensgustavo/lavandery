@@ -2,11 +2,14 @@ package dadm.quixada.ufc.lavandery
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dadm.quixada.ufc.lavandery.fragments.HomeFragment
 import dadm.quixada.ufc.lavandery.fragments.MyRequestsFragment
 import dadm.quixada.ufc.lavandery.fragments.SettingsFragment
+
 
 class HomeActivity : AppCompatActivity() {
 

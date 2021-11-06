@@ -18,4 +18,6 @@
     <string name="create_account_label">Criar conta</string>
     <string name="sign_in_label">Faça login</string>
     <string name="already_have_an_account">Já tem uma conta?</string>
+    <string name="hello_user_label">Olá,</string>
+    <string name="mock_user_name_in_settings_screen">Gustavo</string>
 </resources>
