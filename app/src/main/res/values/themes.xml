@@ -11,6 +11,19 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Switch colors. -->
+        <item name="switchStyle">@style/Widget.App.Switch</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Widget.App.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Switch</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Switch" parent="">
+        <!--Switch base color when false-->
+        <item name="colorOnSurface">@color/main_blue</item>
+        <!--Switch base color when true-->
+        <item name="colorSecondary">@color/main_blue</item>
     </style>
 </resources>

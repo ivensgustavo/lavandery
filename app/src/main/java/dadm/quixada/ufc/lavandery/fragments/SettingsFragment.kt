@@ -1,11 +1,15 @@
 package dadm.quixada.ufc.lavandery.fragments
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.Toast
+import dadm.quixada.ufc.lavandery.ConsumerPreferencesActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.SettingsAdapter
 import dadm.quixada.ufc.lavandery.internalModels.SettingItem
@@ -32,5 +36,17 @@ class SettingsFragment : Fragment() {
         val adapter = SettingsAdapter(requireActivity(), settingsList)
         val listView: ListView = view.findViewById(R.id.settings_list_view)
         listView.adapter = adapter
+
+        listView.setOnItemClickListener { adapterView, view, itemPosition, l ->
+            when(itemPosition) {
+                0 -> openNewSettingGroup(ConsumerPreferencesActivity())
+                else -> Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun openNewSettingGroup(activity: Activity) {
+        val intent = Intent(context, activity::class.java)
+        startActivity(intent)
     }
 }

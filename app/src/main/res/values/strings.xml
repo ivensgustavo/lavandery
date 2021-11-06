@@ -20,4 +20,5 @@
     <string name="already_have_an_account">Já tem uma conta?</string>
     <string name="hello_user_label">Olá,</string>
     <string name="mock_user_name_in_settings_screen">Gustavo</string>
+    <string name="services_preferences_label">Preferências de serviço</string>
 </resources>
