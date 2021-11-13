@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.Toast
+import dadm.quixada.ufc.lavandery.AccountSettings
 import dadm.quixada.ufc.lavandery.ConsumerPreferencesActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.SettingsAdapter
@@ -40,7 +41,8 @@ class SettingsFragment : Fragment() {
         listView.setOnItemClickListener { adapterView, view, itemPosition, l ->
             when(itemPosition) {
                 0 -> openNewSettingGroup(ConsumerPreferencesActivity())
-                else -> Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
+                1 -> openNewSettingGroup(AccountSettings())
+                else-> Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -21,4 +21,6 @@
     <string name="hello_user_label">Olá,</string>
     <string name="mock_user_name_in_settings_screen">Gustavo</string>
     <string name="services_preferences_label">Preferências de serviço</string>
+    <string name="set_up_account_title">Configure sua conta</string>
+    <string name="open_account_setting_label">editar</string>
 </resources>
