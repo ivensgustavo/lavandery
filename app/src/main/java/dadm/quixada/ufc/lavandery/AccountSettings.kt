@@ -21,10 +21,11 @@ class AccountSettings : AppCompatActivity() {
     private fun populateAccountSettingsList(): ArrayList<AccountSetting> {
         val list: ArrayList<AccountSetting> = ArrayList()
 
-        list.add(AccountSetting("Nome", "Gustavo Ivens"))
-        list.add(AccountSetting("E-mail", "gustavoivens@gmail.com"))
-        list.add(AccountSetting("Celular", "+55 88 992436247"))
+        list.add(AccountSetting("Nome", "Gustavo Ivens", EditName()))
+        list.add(AccountSetting("E-mail", "gustavoivens@gmail.com", EditName()))
+        list.add(AccountSetting("Celular", "+55 88 992436247", EditName()))
 
         return list
     }
+
 }

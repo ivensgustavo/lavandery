@@ -23,4 +23,5 @@
     <string name="services_preferences_label">Preferências de serviço</string>
     <string name="set_up_account_title">Configure sua conta</string>
     <string name="open_account_setting_label">editar</string>
+    <string name="save_button_label">Salvar</string>
 </resources>
