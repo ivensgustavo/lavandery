@@ -80,7 +80,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/save_account_setting_button"
+            android:id="@+id/save_name_button"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginTop="32dp"

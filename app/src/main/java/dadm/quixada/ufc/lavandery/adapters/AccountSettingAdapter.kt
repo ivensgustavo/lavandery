@@ -8,10 +8,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.internalModels.AccountSetting
-import dadm.quixada.ufc.lavandery.internalModels.ConsumerPreference
+
 
 class AccountSettingAdapter(private val context: Activity, private val arrayList: ArrayList<AccountSetting>):
     ArrayAdapter<AccountSetting>(context, R.layout.account_settings_list_item ,arrayList) {
@@ -37,7 +36,7 @@ class AccountSettingAdapter(private val context: Activity, private val arrayList
                     "Nome" -> {
                         val intent = Intent(context, accountSettingActivity::class.java)
                         intent.putExtra("name", accountSetting.value)
-                        context.startActivity(intent)
+                        context.startActivityForResult(intent, R.integer.REQUEST_EDIT_NAME)
                     }
                     else -> {
                         Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
