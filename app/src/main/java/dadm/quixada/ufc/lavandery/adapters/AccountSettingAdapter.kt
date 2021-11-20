@@ -12,40 +12,46 @@ import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.internalModels.AccountSetting
 
 
-class AccountSettingAdapter(private val context: Activity, private val arrayList: ArrayList<AccountSetting>):
-    ArrayAdapter<AccountSetting>(context, R.layout.account_settings_list_item ,arrayList) {
+class AccountSettingAdapter(
+    private val context: Activity,
+    private val arrayList: ArrayList<AccountSetting>
+) :
+    ArrayAdapter<AccountSetting>(context, R.layout.account_settings_list_item, arrayList) {
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val inflater: LayoutInflater = LayoutInflater.from(context)
-            val view: View = inflater.inflate(R.layout.account_settings_list_item, null)
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val inflater: LayoutInflater = LayoutInflater.from(context)
+        val view: View = inflater.inflate(R.layout.account_settings_list_item, null)
 
-            val accountSetting: AccountSetting = arrayList[position]
-            val accountSettingName: TextView = view.findViewById(R.id.account_setting_name)
-            val accountSettingValue: TextView = view.findViewById(R.id.account_setting_value)
-            val accountSettingActivity: Activity = accountSetting.activity
-            val accountSettingEditLink: TextView = view.findViewById(R.id.open_account_setting_button)
-
-
-            accountSettingName.text = accountSetting.name
-            accountSettingValue.text = accountSetting.value
-
-            accountSettingEditLink.setOnClickListener {
+        val accountSetting: AccountSetting = arrayList[position]
+        val accountSettingName: TextView = view.findViewById(R.id.account_setting_name)
+        val accountSettingValue: TextView = view.findViewById(R.id.account_setting_value)
+        val accountSettingActivity: Activity = accountSetting.activity
+        val accountSettingEditLink: TextView = view.findViewById(R.id.open_account_setting_button)
 
 
-                when(accountSetting.name) {
-                    "Nome" -> {
-                        val intent = Intent(context, accountSettingActivity::class.java)
-                        intent.putExtra("name", accountSetting.value)
-                        context.startActivityForResult(intent, R.integer.REQUEST_EDIT_NAME)
-                    }
-                    else -> {
-                        Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
-                    }
+        accountSettingName.text = accountSetting.name
+        accountSettingValue.text = accountSetting.value
+
+        accountSettingEditLink.setOnClickListener {
+            val intent = Intent(context, accountSettingActivity::class.java)
+
+            when (accountSetting.name) {
+                "Nome" -> {
+                    intent.putExtra("name", accountSetting.value)
+                    context.startActivityForResult(intent, R.integer.REQUEST_EDIT_NAME)
                 }
-
-
+                "E-mail" -> {
+                    intent.putExtra("email", accountSetting.value)
+                    context.startActivityForResult(intent, R.integer.REQUEST_EDIT_NAME)
+                }
+                else -> {
+                    Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
+                }
             }
 
-            return view
+
         }
+
+        return view
+    }
 }

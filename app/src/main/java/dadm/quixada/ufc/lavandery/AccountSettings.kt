@@ -28,7 +28,7 @@ class AccountSettings : AppCompatActivity() {
         val list: ArrayList<AccountSetting> = ArrayList()
 
         list.add(AccountSetting("Nome", "Gustavo Ivens", EditName()))
-        list.add(AccountSetting("E-mail", "gustavoivens@gmail.com", EditName()))
+        list.add(AccountSetting("E-mail", "gustavoivens@gmail.com", EditEmailActivity()))
         list.add(AccountSetting("Celular", "+55 88 992436247", EditName()))
 
         return list
@@ -37,14 +37,27 @@ class AccountSettings : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode == R.integer.RESULT_EDIT_NAME) {
-            val name = data?.extras?.get("name") as String
-            val surname = data.extras!!.get("surname") as String
-            val fullName = name + " " + surname
-            val editedName = AccountSetting("Nome", fullName, EditName())
-            this.accountSettingsList[0] = editedName
-            this.accountSettingsAdapter.notifyDataSetChanged()
+        when(resultCode) {
+            R.integer.RESULT_EDIT_NAME -> updateName(data)
+            R.integer.RESULT_EDIT_EMAIL -> updateEmail(data)
+            else -> Toast.makeText(this, "Código de retorno com valor inesperado", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun updateName(data: Intent?) {
+        val name = data?.extras?.get("name") as String
+        val surname = data.extras!!.get("surname") as String
+        val fullName = name + " " + surname
+        val editedName = AccountSetting("Nome", fullName, EditName())
+        this.accountSettingsList[0] = editedName
+        this.accountSettingsAdapter.notifyDataSetChanged()
+    }
+
+    private fun updateEmail(data: Intent?) {
+        val email = data?.extras?.get("email") as String
+        val editedEmail = AccountSetting("E-mail", email, EditEmailActivity())
+        this.accountSettingsList[1] = editedEmail
+        this.accountSettingsAdapter.notifyDataSetChanged()
     }
 
 }
