@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Lavandery">
         <activity
+            android:name=".EditCellPhoneActivity"
+            android:exported="true" />
+        <activity
             android:name=".EditEmailActivity"
             android:exported="true" />
         <activity

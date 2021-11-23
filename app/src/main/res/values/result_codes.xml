@@ -2,4 +2,5 @@
 <resources>
     <integer name="RESULT_EDIT_NAME">1</integer>
     <integer name="RESULT_EDIT_EMAIL">2</integer>
+    <integer name="RESULT_EDIT_CELL_PHONE">3</integer>
 </resources>

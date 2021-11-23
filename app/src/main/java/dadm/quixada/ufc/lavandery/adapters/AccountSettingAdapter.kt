@@ -45,7 +45,8 @@ class AccountSettingAdapter(
                     context.startActivityForResult(intent, R.integer.REQUEST_EDIT_NAME)
                 }
                 else -> {
-                    Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
+                    intent.putExtra("cell_phone", accountSetting.value)
+                    context.startActivityForResult(intent, R.integer.REQUEST_EDIT_CELL_PHONE)
                 }
             }
 
