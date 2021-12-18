@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="32dp"
+    android:paddingEnd="32dp"
+    android:paddingBottom="32dp"
+    android:background="@color/white"
+    tools:context=".SelectAccountTypeActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="64dp"
+        android:text="@string/lavandery"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="@color/main_blue"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textSize="16sp"
+        android:textColor="@color/gray_text"
+        android:text="Selecione o tipo de conta que você deseja ter no aplicativo."/>
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:checkedButton="@+id/radio_button_consumer_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+        <RadioButton
+            android:id="@+id/radio_button_consumer_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Consumidor de servios de lavanderia"
+            app:buttonTint="@color/main_blue"/>
+        <RadioButton
+            android:id="@+id/radio_button_provider_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Prestador de serviços de lavanderia"
+            app:buttonTint="@color/main_blue"/>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/continue_to_address_register"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/continue_label"
+        android:textAllCaps="true"/>
+
+</LinearLayout>

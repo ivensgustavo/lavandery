@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Lavandery">
         <activity
+            android:name=".SelectAccountTypeActivity"
+            android:exported="true" />
+        <activity
             android:name=".AddressRegistrationActivity"
             android:exported="true" />
         <activity

@@ -34,7 +34,7 @@ class RegistrationActivity : AppCompatActivity() {
 
     private fun configureContinueButton(){
         continueButton.setOnClickListener {
-            val intent = Intent(this, AddressRegistrationActivity::class.java)
+            val intent = Intent(this, SelectAccountTypeActivity::class.java)
             startActivity(intent)
         }
     }
