@@ -86,11 +86,11 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/create_account_button"
+        android:id="@+id/continue_button"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_marginTop="24dp"
-        android:text="@string/create_account_label"
+        android:text="@string/continue_label"
         android:textAllCaps="true"/>
 
     <LinearLayout

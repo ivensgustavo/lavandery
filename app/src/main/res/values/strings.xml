@@ -25,4 +25,9 @@
     <string name="open_account_setting_label">editar</string>
     <string name="save_button_label">Salvar</string>
     <string name="cell_phone_label">Celular</string>
+    <string name="continue_label">Continuar</string>
+    <string name="street_label">Rua</string>
+    <string name="street_number_label">Número</string>
+    <string name="cep_label">CEP</string>
+    <string name="complement_label">Complemento</string>
 </resources>
