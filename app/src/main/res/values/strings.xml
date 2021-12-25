@@ -30,4 +30,5 @@
     <string name="street_number_label">Número</string>
     <string name="cep_label">CEP</string>
     <string name="complement_label">Complemento</string>
+    <string name="order_details_label">Detalhes do pedido</string>
 </resources>
