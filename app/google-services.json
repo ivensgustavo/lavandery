@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "574485629012",
+    "project_id": "lavandery-b32e8",
+    "storage_bucket": "lavandery-b32e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574485629012:android:238a87a95ac9b9499405c1",
+        "android_client_info": {
+          "package_name": "dadm.quixada.ufc.lavandery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574485629012-2s39gf5nu2haohv3h3t0ubbmfat9s14k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiDsDUetuFbonpyMneLP3rhD6FummBNS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574485629012-2s39gf5nu2haohv3h3t0ubbmfat9s14k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

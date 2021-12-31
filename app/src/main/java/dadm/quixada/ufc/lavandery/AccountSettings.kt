@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import dadm.quixada.ufc.lavandery.adapters.AccountSettingAdapter
 import dadm.quixada.ufc.lavandery.internalModels.AccountSetting
 
@@ -13,6 +15,8 @@ class AccountSettings : AppCompatActivity() {
 
     private lateinit var accountSettingsList: ArrayList<AccountSetting>
     private lateinit var  accountSettingsAdapter: AccountSettingAdapter
+    private lateinit var btnSignOutApp: TextView
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,8 +25,12 @@ class AccountSettings : AppCompatActivity() {
         accountSettingsList = this.populateAccountSettingsList()
         val accountSettingsListView: ListView = findViewById(R.id.account_settings_list_view)
         accountSettingsAdapter = AccountSettingAdapter(this, accountSettingsList)
-
         accountSettingsListView.adapter = accountSettingsAdapter
+
+        btnSignOutApp = findViewById(R.id.btn_sign_out_app)
+        mAuth = FirebaseAuth.getInstance()
+
+        configureSignOutAppButton()
     }
 
     private fun populateAccountSettingsList(): ArrayList<AccountSetting> {
@@ -66,6 +74,15 @@ class AccountSettings : AppCompatActivity() {
         val editedCellPhone = AccountSetting("Celular", cellPhone, EditCellPhoneActivity())
         this.accountSettingsList[2] = editedCellPhone
         this.accountSettingsAdapter.notifyDataSetChanged()
+    }
+
+    private fun configureSignOutAppButton(){
+        btnSignOutApp.setOnClickListener {
+            mAuth.signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
 }
