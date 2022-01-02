@@ -22,12 +22,21 @@
         android:textColor="@color/main_blue"/>
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:text="Estamos quase lá!"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:textSize="16sp"
         android:textColor="@color/gray_text"
-        android:text="Preencha as informações de endereço para conluir o cadastro."/>
+        android:text="Adicione suas informações de endereço para que possa usar o serviço da lavandery."/>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -37,7 +46,7 @@
         app:boxStrokeColor="@color/main_blue"
         app:hintTextColor="@color/main_blue">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/street_input_text"
+            android:id="@+id/address_registration_street"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/street_label"/>
@@ -57,7 +66,7 @@
             app:boxStrokeColor="@color/main_blue"
             app:hintTextColor="@color/main_blue">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/street_number_input_text"
+                android:id="@+id/address_registration_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/street_number_label"/>
@@ -72,7 +81,7 @@
             app:boxStrokeColor="@color/main_blue"
             app:hintTextColor="@color/main_blue">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/cep_input_text"
+                android:id="@+id/address_registration_cep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/cep_label"/>
@@ -88,14 +97,14 @@
         app:boxStrokeColor="@color/main_blue"
         app:hintTextColor="@color/main_blue">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/complement_input_text"
+            android:id="@+id/address_registration_complement"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/complement_label"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/create_account_button"
+        android:id="@+id/button_save_address"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_marginTop="24dp"

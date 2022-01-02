@@ -30,7 +30,7 @@
         android:text="Selecione o tipo de conta que você deseja ter no aplicativo."/>
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/radio_group_select_account_type"
         android:checkedButton="@+id/radio_button_consumer_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

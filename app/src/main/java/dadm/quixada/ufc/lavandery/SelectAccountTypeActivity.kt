@@ -5,13 +5,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import dadm.quixada.ufc.lavandery.models.Address
+import dadm.quixada.ufc.lavandery.models.User
 
 class SelectAccountTypeActivity : AppCompatActivity() {
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var createAccountButton: Button
+    private lateinit var radioGroupAccountType: RadioGroup
+    private lateinit var accountTypeRadioSelected: RadioButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,40 +28,74 @@ class SelectAccountTypeActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         createAccountButton = findViewById(R.id.continue_to_address_register)
 
+        this.initializeViews()
         this.configureContinueButton()
     }
 
-    override fun onStart() {
-        super.onStart()
-        val name = intent.extras!!.get("name").toString()
-
-        Toast.makeText(this, name, Toast.LENGTH_SHORT).show()
+    private fun initializeViews() {
+        radioGroupAccountType = findViewById(R.id.radio_group_select_account_type)
     }
 
-    private fun configureContinueButton(){
+    private fun configureContinueButton() {
 
         createAccountButton.setOnClickListener {
-            //val intent = Intent(this, AddressRegistrationActivity::class.java)
-            //startActivity(intent)
             createUser()
         }
     }
 
-    private fun createUser(){
+    private fun createUser() {
 
+        val name = intent.extras!!.get("name").toString()
+        val surname = intent.extras!!.get("surname").toString()
+        val telephone = intent.extras!!.get("telephone").toString()
         val email = intent.extras!!.get("email").toString()
         val password = intent.extras!!.get("password").toString()
+        val addressList: ArrayList<Address> = ArrayList()
+
+        accountTypeRadioSelected = findViewById(radioGroupAccountType.checkedRadioButtonId)
+        val accountType: String = accountTypeRadioSelected.text.toString()
+
 
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 val exception = task.exception
-                if(task.isSuccessful){
-                    Toast.makeText(this, "Conta criada com sucesso", Toast.LENGTH_SHORT).show()
+                if (task.isSuccessful) {
+                    val currentUserId = mAuth.currentUser!!.uid
+                    val newUser = User(name, surname, telephone, accountType, addressList)
+
+                    val db = Firebase.firestore
+
+                    db.collection("users").document(currentUserId)
+                        .set(newUser)
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(
+                                    this,
+                                    "Sua conta foi criada com sucesso.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+
+                                val addressIntent =
+                                    Intent(this, AddressRegistrationActivity::class.java)
+                                startActivity(addressIntent)
+                                finish()
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Houve um ero ao criar a conta. Tente novamente",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+
                 } else {
-                    Toast.makeText(this, "Ocorreu um erro ao criar a conta", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "Ocorreu um erro ao criar a conta. Tente novamente",
+                        Toast.LENGTH_LONG
+                    ).show()
                     Log.w("SelectAccountActivity", exception!!.message.toString())
                 }
             }
-
     }
 }
