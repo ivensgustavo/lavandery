@@ -3,11 +3,15 @@ package dadm.quixada.ufc.lavandery
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+
 import com.google.firebase.auth.FirebaseAuth
+
 import dadm.quixada.ufc.lavandery.adapters.AccountSettingAdapter
 import dadm.quixada.ufc.lavandery.internalModels.AccountSetting
 
@@ -17,6 +21,7 @@ class AccountSettings : AppCompatActivity() {
     private lateinit var  accountSettingsAdapter: AccountSettingAdapter
     private lateinit var btnSignOutApp: TextView
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +34,14 @@ class AccountSettings : AppCompatActivity() {
 
         btnSignOutApp = findViewById(R.id.btn_sign_out_app)
         mAuth = FirebaseAuth.getInstance()
+
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         configureSignOutAppButton()
     }
@@ -79,9 +92,10 @@ class AccountSettings : AppCompatActivity() {
     private fun configureSignOutAppButton(){
         btnSignOutApp.setOnClickListener {
             mAuth.signOut()
+            googleSignInClient.signOut()
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
+            finishAffinity()
         }
     }
 

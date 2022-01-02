@@ -37,7 +37,7 @@
         app:boxStrokeColor="@color/main_blue"
         app:hintTextColor="@color/main_blue">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email_input_text"
+            android:id="@+id/login_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email_label" />
@@ -51,7 +51,7 @@
         app:boxStrokeColor="@color/main_blue"
         app:hintTextColor="@color/main_blue">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password_input_text"
+            android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

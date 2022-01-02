@@ -37,7 +37,7 @@
         app:boxStrokeColor="@color/main_blue"
         app:hintTextColor="@color/main_blue">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/name_input_text"
+            android:id="@+id/registration_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/name_label"/>
@@ -51,7 +51,7 @@
         app:boxStrokeColor="@color/main_blue"
         app:hintTextColor="@color/main_blue">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/surname_input_text"
+            android:id="@+id/registration_surname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/surname_label"/>
@@ -65,7 +65,7 @@
         app:boxStrokeColor="@color/main_blue"
         app:hintTextColor="@color/main_blue">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/telephone_inputText"
+            android:id="@+id/registration_telephone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/telephone_input_text"/>
@@ -79,10 +79,26 @@
         app:boxStrokeColor="@color/main_blue"
         app:hintTextColor="@color/main_blue">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/registration_email_input_text"
+            android:id="@+id/registration_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email_label"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:boxStrokeColor="@color/main_blue"
+        app:hintTextColor="@color/main_blue"
+        app:endIconMode="password_toggle">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/registration_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password_label"
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
