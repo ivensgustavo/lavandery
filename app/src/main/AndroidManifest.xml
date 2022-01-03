@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dadm.quixada.ufc.lavandery">
 
+
     <application
         android:hardwareAccelerated="true"
         android:largeHeap="true"

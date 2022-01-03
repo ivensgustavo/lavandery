@@ -10,4 +10,8 @@
     <color name="main_blue">#1E319D</color>
     <color name="gray_text">#939393</color>
     <color name="new_white">#F5F5F5</color>
+    <color name="bg_icon_agendado">#C4A6ED</color>
+    <color name="bg_icon_entregue">#D7F1E8</color>
+    <color name="bg_icon_lavando">#9DC9FE</color>
+    <color name="bg_icon_transportando">#EBB65E</color>
 </resources>
