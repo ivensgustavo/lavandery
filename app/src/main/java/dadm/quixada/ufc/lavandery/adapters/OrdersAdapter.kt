@@ -1,11 +1,8 @@
 package dadm.quixada.ufc.lavandery.adapters
 
 import android.app.Activity
-import android.content.Intent
-import android.graphics.BlendModeColorFilter
-import android.graphics.ColorFilter
-import android.graphics.drawable.Drawable
 import android.os.Build
+import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +11,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import dadm.quixada.ufc.lavandery.OrderDetailsActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
+import dadm.quixada.ufc.lavandery.fragments.OrderDetails
 import dadm.quixada.ufc.lavandery.internalModels.Order
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -42,6 +42,11 @@ class OrdersAdapter(private val context:Activity, private val orderList: ArrayLi
         orderQtyItemsTextView.text = order.qtyItens.toString() + " items"
         orderStatusImageView.setImageResource(resolveIcon(order.status))
         bgIconOrderStatus.setBackgroundResource(resolveColor(order.status))
+
+        view.setOnClickListener {
+            val main = context as HomeActivity
+            main.changeCurrentFragment(OrderDetails())
+        }
 
         return view
     }

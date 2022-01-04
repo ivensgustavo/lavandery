@@ -2,12 +2,14 @@ package dadm.quixada.ufc.lavandery.fragments
 
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils.replace
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import androidx.annotation.RequiresApi
+import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.OrdersAdapter
 import dadm.quixada.ufc.lavandery.internalModels.Order

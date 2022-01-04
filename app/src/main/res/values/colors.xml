@@ -14,4 +14,5 @@
     <color name="bg_icon_entregue">#D7F1E8</color>
     <color name="bg_icon_lavando">#9DC9FE</color>
     <color name="bg_icon_transportando">#EBB65E</color>
+    <color name="light_gray">#DBDBDB</color>
 </resources>

@@ -1,15 +1,12 @@
 package dadm.quixada.ufc.lavandery
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ListView
-import android.widget.Toast
+
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
+
 import dadm.quixada.ufc.lavandery.fragments.HomeFragment
 import dadm.quixada.ufc.lavandery.fragments.MyRequestsFragment
 import dadm.quixada.ufc.lavandery.fragments.SettingsFragment
@@ -42,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
 
     }
 
-    private fun changeCurrentFragment(fragment: Fragment) {
+    fun changeCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.container_screens, fragment)
             commit()
