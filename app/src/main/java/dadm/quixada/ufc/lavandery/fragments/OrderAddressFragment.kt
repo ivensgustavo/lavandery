@@ -30,14 +30,6 @@ class OrderAddressFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initializeViews(view)
-        setAddress(
-            Address(
-                "Sítio Lagoa I",
-                0, 62370000,
-                "Próximo ao Bar e Mercearia o Zé Bode"
-            )
-        )
-        updateScreenWithAddressData()
     }
 
     private fun initializeViews(view: View) {
@@ -48,6 +40,7 @@ class OrderAddressFragment : Fragment() {
 
     fun setAddress(address: Address) {
         this.address = address
+        this.updateScreenWithAddressData()
     }
 
     private fun updateScreenWithAddressData() {

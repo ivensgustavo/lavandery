@@ -3,6 +3,7 @@ package dadm.quixada.ufc.lavandery.fragments
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils.replace
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -76,5 +77,14 @@ class MyRequestsFragment : Fragment() {
         val orderListView: ListView = view.findViewById(R.id.order_list_view)
 
         orderListView.adapter = ordersAdapter
+
+        orderListView.setOnItemClickListener { _, _, _, _ ->
+
+            requireActivity().supportFragmentManager.beginTransaction().apply {
+                replace(R.id.container_screens, OrderDetails())
+                addToBackStack("Detalhes")
+                commit()
+            }
+        }
     }
 }

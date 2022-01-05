@@ -43,11 +43,6 @@ class OrdersAdapter(private val context:Activity, private val orderList: ArrayLi
         orderStatusImageView.setImageResource(resolveIcon(order.status))
         bgIconOrderStatus.setBackgroundResource(resolveColor(order.status))
 
-        view.setOnClickListener {
-            val main = context as HomeActivity
-            main.changeCurrentFragment(OrderDetails())
-        }
-
         return view
     }
 

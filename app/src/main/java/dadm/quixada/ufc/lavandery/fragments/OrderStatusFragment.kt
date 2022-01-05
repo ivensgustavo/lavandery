@@ -38,7 +38,6 @@ class OrderStatusFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
       initializeViews(view)
-      resolveStatus("Lavando")
 
     }
 
@@ -53,7 +52,7 @@ class OrderStatusFragment : Fragment() {
         iconStatusDelivered = view.findViewById(R.id.order_details_img_status_delivered)
     }
 
-    private fun resolveStatus(status: String){
+    fun resolveStatus(status: String){
         when(status){
             "Agendado" -> changeStatusToScheduled()
             "Peças coletadas" -> changeStatusToPickedUp()

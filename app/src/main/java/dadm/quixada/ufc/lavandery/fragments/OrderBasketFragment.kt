@@ -32,21 +32,6 @@ class OrderBasketFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initializeViews(view)
-
-        val laundryList: ArrayList<LaundryListItem> = ArrayList()
-
-        laundryList.add(LaundryListItem("Camiseta", 7, 3.0.toFloat()))
-        laundryList.add(LaundryListItem("Camisa", 2, 5.0.toFloat()))
-        laundryList.add(LaundryListItem("Short", 3, 4.0.toFloat()))
-        laundryList.add(LaundryListItem("Calças", 7, 3.0.toFloat()))
-        laundryList.add(LaundryListItem("Vestido", 2, 5.0.toFloat()))
-        laundryList.add(LaundryListItem("Saia", 3, 4.0.toFloat()))
-        laundryList.add(LaundryListItem("Casaco", 7, 3.0.toFloat()))
-
-        setOrderBasket(laundryList)
-        setOrderTotal(150.0f)
-        updateListWithItems()
-        updateTotalTextView()
     }
 
     private fun initializeViews(view: View){
@@ -56,15 +41,18 @@ class OrderBasketFragment : Fragment() {
 
    fun setOrderBasket(orderBasket: ArrayList<LaundryListItem>){
        this.orderBasket = orderBasket
+       this.updateListWithItems()
    }
 
     private fun updateListWithItems(){
         val adapter = LaundryListAdapter(requireActivity(), orderBasket)
         orderBasketListView.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
     fun setOrderTotal(total: Float) {
         this.orderTotalValue = total
+        this.updateTotalTextView()
     }
 
     private fun updateTotalTextView() {

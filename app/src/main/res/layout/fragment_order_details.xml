@@ -65,11 +65,11 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <FrameLayout
-                    android:id="@+id/container_order_status"
+                <fragment
+                    android:id="@+id/order_status_fragment"
+                    android:name="dadm.quixada.ufc.lavandery.fragments.OrderStatusFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp" />
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -80,8 +80,9 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <FrameLayout
-                    android:id="@+id/container_order_basket"
+                <fragment
+                    android:id="@+id/order_basket_fragment"
+                    android:name="dadm.quixada.ufc.lavandery.fragments.OrderBasketFragment"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:layout_marginTop="16dp" />
@@ -95,8 +96,9 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <FrameLayout
-                    android:id="@+id/container_order_address"
+                <fragment
+                    android:id="@+id/order_address_fragment"
+                    android:name="dadm.quixada.ufc.lavandery.fragments.OrderAddressFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp" />
