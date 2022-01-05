@@ -25,7 +25,7 @@ class LaundryListAdapter(private val context:Activity, private val laundryList: 
 
         itemTypeView.text = laundryListItem.itemType
         itemQuantityView.text = laundryListItem.quantity.toString()+"x"
-        itemValueView.text = "R$ "+laundryListItem.unitaryValue.toString()
+        itemValueView.text = "R$ "+String.format("%.2f", laundryListItem.unitaryValue)
 
         return view
     }
