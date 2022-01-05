@@ -5,12 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.ListView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.LaundryListAdapter
 import dadm.quixada.ufc.lavandery.internalModels.LaundryListItem
+import dadm.quixada.ufc.lavandery.internalModels.Order
 
 
 class OrderDetails : Fragment() {
@@ -36,6 +38,8 @@ class OrderDetails : Fragment() {
         transaction.add(container, fragment)
         transaction.commit()
     }
+
+
 
 
 }

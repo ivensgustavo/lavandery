@@ -19,8 +19,8 @@
 
             <LinearLayout
                 android:id="@+id/order_details_status_scheduled"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_status_desativado"
                 android:orientation="horizontal">
 
@@ -63,8 +63,8 @@
 
             <LinearLayout
                 android:id="@+id/order_details_status_washing"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_status_desativado"
                 android:orientation="horizontal">
 
@@ -107,8 +107,8 @@
 
             <LinearLayout
                 android:id="@+id/order_details_status_transporting"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_status_desativado"
                 android:orientation="horizontal">
 
@@ -151,8 +151,8 @@
 
             <LinearLayout
                 android:id="@+id/order_details_status_delivered"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:background="@drawable/bg_status_desativado"
                 android:orientation="horizontal">
 
