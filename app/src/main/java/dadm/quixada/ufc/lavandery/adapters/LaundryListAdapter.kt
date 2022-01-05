@@ -17,17 +17,15 @@ class LaundryListAdapter(private val context:Activity, private val laundryList: 
         val inflater: LayoutInflater = LayoutInflater.from(context)
         val view: View = inflater.inflate(R.layout.laundry_list_item, null)
 
-        val itemTypeView: TextView = view.findViewById(R.id.laundry_list_item_type)
-        val itemQuantityView: TextView = view.findViewById(R.id.laundry_list_item_quantity)
-        val itemValueView: TextView = view.findViewById(R.id.laundry_list_item_value)
-        val itemTotalView: TextView = view.findViewById(R.id.laundry_list_item_total)
+        val itemTypeView: TextView = view.findViewById(R.id.type_of_item_in_basket)
+        val itemQuantityView: TextView = view.findViewById(R.id.item_quantity_in_basquet)
+        val itemValueView: TextView = view.findViewById(R.id.price_by_type)
 
         val laundryListItem: LaundryListItem = laundryList[position]
 
         itemTypeView.text = laundryListItem.itemType
-        itemQuantityView.text = laundryListItem.quantity.toString()
-        itemValueView.text = laundryListItem.unitaryValue.toString()
-        itemTotalView.text = (laundryListItem.unitaryValue * laundryListItem.quantity).toString()
+        itemQuantityView.text = laundryListItem.quantity.toString()+"x"
+        itemValueView.text = "R$ "+laundryListItem.unitaryValue.toString()
 
         return view
     }

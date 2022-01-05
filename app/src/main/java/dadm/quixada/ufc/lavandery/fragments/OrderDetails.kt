@@ -5,9 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import dadm.quixada.ufc.lavandery.R
+import dadm.quixada.ufc.lavandery.adapters.LaundryListAdapter
+import dadm.quixada.ufc.lavandery.internalModels.LaundryListItem
 
 
 class OrderDetails : Fragment() {
@@ -23,8 +26,14 @@ class OrderDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        insertFragment(R.id.container_order_status, OrderStatusFragment())
+        insertFragment(R.id.container_order_basket, OrderBasketFragment())
+        insertFragment(R.id.container_order_address, OrderAddressFragment())
+    }
+
+    private fun insertFragment(container: Int, fragment: Fragment) {
         val transaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-        transaction.add(R.id.container_order_status, OrderStatusFragment())
+        transaction.add(container, fragment)
         transaction.commit()
     }
 

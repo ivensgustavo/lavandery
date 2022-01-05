@@ -32,4 +32,6 @@
     <string name="complement_label">Complemento</string>
     <string name="order_details_label">Detalhes do pedido</string>
     <string name="label_sign_out_app">Sair do app</string>
+    <string name="total_label">Total</string>
+    <string name="address_label">Endereço</string>
 </resources>

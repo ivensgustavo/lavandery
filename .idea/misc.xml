@@ -10,6 +10,7 @@
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable/bg_status_desativado.xml" value="0.1925925925925926" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable/bg_text.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable/bottom_navigation_item_color.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable/dispatch_line.xml" value="0.1824074074074074" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/account_settings_lins_item.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/account_settings_list_item.xml" value="0.184375" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/activity_account_settings.xml" value="0.22" />
@@ -29,7 +30,9 @@
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/consumer_preferences_list_item.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_home.xml" value="0.184375" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_my_requests.xml" value="0.184375" />
-        <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_order_details.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_order_address.xml" value="0.184375" />
+        <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_order_basket.xml" value="0.4130688448074679" />
+        <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_order_details.xml" value="0.2363367799113737" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_order_status.xml" value="0.184375" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_settings.xml" value="0.184375" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/laundry_list_item.xml" value="0.3333333333333333" />
