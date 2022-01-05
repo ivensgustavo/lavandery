@@ -5,11 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import dadm.quixada.ufc.lavandery.R
+import dadm.quixada.ufc.lavandery.models.Address
 
 
 class OrderAddressFragment : Fragment() {
 
+    private lateinit var localTextView: TextView
+    private lateinit var complementTextView: TextView
+    private lateinit var cepTextView: TextView
+
+    private lateinit var address: Address
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -17,6 +24,36 @@ class OrderAddressFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_order_address, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initializeViews(view)
+        setAddress(
+            Address(
+                "Sítio Lagoa I",
+                0, 62370000,
+                "Próximo ao Bar e Mercearia o Zé Bode"
+            )
+        )
+        updateScreenWithAddressData()
+    }
+
+    private fun initializeViews(view: View) {
+        localTextView = view.findViewById(R.id.order_details_address_local)
+        complementTextView = view.findViewById(R.id.order_details_address_complement)
+        cepTextView = view.findViewById(R.id.order_details_address_cep)
+    }
+
+    fun setAddress(address: Address) {
+        this.address = address
+    }
+
+    private fun updateScreenWithAddressData() {
+        localTextView.text = address.street+","+address.number.toString()
+        complementTextView.text = address.complement
+        cepTextView.text = address.cep.toString()
     }
 
 }
