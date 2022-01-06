@@ -6,6 +6,7 @@
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable-v24/bg_agendado.xml" value="0.11145833333333334" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable-v24/bg_entregue.xml" value="0.1" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable-v24/bg_transportando.xml" value="0.1" />
+        <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable/bg_counter_parts.xml" value="0.1824074074074074" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable/bg_order_status_icon.xml" value="0.1925925925925926" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable/bg_status_desativado.xml" value="0.1925925925925926" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/drawable/bg_text.xml" value="0.20052083333333334" />
@@ -28,6 +29,7 @@
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/activity_select_account_type.xml" value="0.22" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/bg_order_item_icon.xml" value="0.1118659420289855" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/consumer_preferences_list_item.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_count_parts.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_home.xml" value="0.184375" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_my_requests.xml" value="0.184375" />
         <entry key="..\:/Users/gusta/AndroidStudioProjects/Lavandery/app/src/main/res/layout/fragment_order_address.xml" value="0.184375" />
