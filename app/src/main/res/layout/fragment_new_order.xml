@@ -55,56 +55,56 @@
                     android:name="dadm.quixada.ufc.lavandery.fragments.CountPartsFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="16dp"/>
 
                 <fragment
                     android:id="@+id/counter_bermudas"
                     android:name="dadm.quixada.ufc.lavandery.fragments.CountPartsFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="16dp"/>
 
                 <fragment
                     android:id="@+id/counter_shorts_leves"
                     android:name="dadm.quixada.ufc.lavandery.fragments.CountPartsFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="16dp"/>
 
                 <fragment
                     android:id="@+id/counter_shorts_jeans"
                     android:name="dadm.quixada.ufc.lavandery.fragments.CountPartsFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="16dp"/>
 
                 <fragment
-                    android:id="@+id/counter_calças"
+                    android:id="@+id/counter_calcas"
                     android:name="dadm.quixada.ufc.lavandery.fragments.CountPartsFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="16dp"/>
 
                 <fragment
                     android:id="@+id/counter_saias"
                     android:name="dadm.quixada.ufc.lavandery.fragments.CountPartsFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="16dp"/>
 
                 <fragment
                     android:id="@+id/counter_vestidos"
                     android:name="dadm.quixada.ufc.lavandery.fragments.CountPartsFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="16dp"/>
 
                 <fragment
-                    android:id="@+id/agasalhos"
+                    android:id="@+id/counter_agasalhos"
                     android:name="dadm.quixada.ufc.lavandery.fragments.CountPartsFragment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="16dp"/>
             </LinearLayout>
 
         </ScrollView>
