@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dadm.quixada.ufc.lavandery.R
@@ -23,6 +24,7 @@ class NewOrderFragment : Fragment() {
     private lateinit var counterAgasalhos: CountPartsFragment
     private lateinit var qtyOrderItemsTextView: TextView
     private lateinit var orderValueTextView: TextView
+    private lateinit var btnGoCheckout: Button
     private var qtyOrderItems: Int = 0
     private var totalOrderValue: Float = 0.0f
 
@@ -51,6 +53,19 @@ class NewOrderFragment : Fragment() {
     private fun initializeViews(view: View){
         qtyOrderItemsTextView = view.findViewById(R.id.items_in_new_order)
         orderValueTextView = view.findViewById(R.id.total_value_in_new_order)
+        btnGoCheckout = view.findViewById(R.id.btn_go_checkout)
+
+        btnGoCheckout.setOnClickListener {
+            goCheckout()
+        }
+    }
+
+    private fun goCheckout(){
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.container_screens, CheckoutFragment())
+            addToBackStack("Checkout screen")
+            commit()
+        }
     }
 
     private fun initializeCounterFragments(){
