@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dadm.quixada.ufc.lavandery.R
 
@@ -20,6 +21,10 @@ class NewOrderFragment : Fragment() {
     private lateinit var counterSaias: CountPartsFragment
     private lateinit var counterVestidos: CountPartsFragment
     private lateinit var counterAgasalhos: CountPartsFragment
+    private lateinit var qtyOrderItemsTextView: TextView
+    private lateinit var orderValueTextView: TextView
+    private var qtyOrderItems: Int = 0
+    private var totalOrderValue: Float = 0.0f
 
 
     override fun onCreateView(
@@ -38,8 +43,14 @@ class NewOrderFragment : Fragment() {
 
         bottomNavigationMenu.visibility = View.GONE
 
+        initializeViews(view)
         initializeCounterFragments()
         changeCounterFragments()
+    }
+
+    private fun initializeViews(view: View){
+        qtyOrderItemsTextView = view.findViewById(R.id.items_in_new_order)
+        orderValueTextView = view.findViewById(R.id.total_value_in_new_order)
     }
 
     private fun initializeCounterFragments(){
@@ -98,5 +109,23 @@ class NewOrderFragment : Fragment() {
 
         counterAgasalhos.setKindOfClothes("Agasalhos")
         counterShortsJeans.setPricePerPiece(6.0f)
+    }
+
+    fun getQtyOrderItems():Int {
+        return qtyOrderItems
+    }
+
+    fun getTotalOrderValue(): Float {
+        return totalOrderValue
+    }
+
+    fun setQtyOrderItems(items: Int){
+        qtyOrderItems = items
+        qtyOrderItemsTextView.text = items.toString()
+    }
+
+    fun setTotalOrderValue(value: Float){
+        totalOrderValue = value
+        orderValueTextView.text = String.format("%.2f", totalOrderValue)
     }
 }

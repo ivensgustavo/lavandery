@@ -1,6 +1,7 @@
 package dadm.quixada.ufc.lavandery.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +35,7 @@ class CountPartsFragment : Fragment() {
         initializeViews(view)
     }
 
-    private fun initializeViews(view: View){
+    private fun initializeViews(view: View) {
         kindOfClothesTextView = view.findViewById(R.id.kind_of_clothes)
         pricePerPieceTextView = view.findViewById(R.id.price_per_piece)
         btnIncrementItems = view.findViewById(R.id.btn_increment_item_qty)
@@ -45,27 +46,38 @@ class CountPartsFragment : Fragment() {
         btnDecrementItems.setOnClickListener { decrementItems() }
     }
 
-    private fun incrementItems(){
+    private fun incrementItems() {
 
-        if(items >= 0){
+        if (items >= 0) {
             items++
             itemsTextView.text = items.toString()
+            val newOrderFragment = parentFragment as NewOrderFragment
+            Log.d("total de item do pedido", newOrderFragment.getQtyOrderItems().toString())
+            newOrderFragment.setQtyOrderItems(newOrderFragment.getQtyOrderItems() + 1)
+            newOrderFragment.setTotalOrderValue(
+                newOrderFragment.getTotalOrderValue() + this.pricePerPiece
+            )
         }
 
     }
 
-    private fun decrementItems(){
-        if(items > 0){
+    private fun decrementItems() {
+        if (items > 0) {
             items--
             itemsTextView.text = items.toString()
+            val newOrderFragment = parentFragment as NewOrderFragment
+            newOrderFragment.setQtyOrderItems(newOrderFragment.getQtyOrderItems() - 1)
+            newOrderFragment.setTotalOrderValue(
+                newOrderFragment.getTotalOrderValue() - this.pricePerPiece
+            )
         }
     }
 
-    fun setKindOfClothes(kindOfClothes: String){
+    fun setKindOfClothes(kindOfClothes: String) {
         kindOfClothesTextView.text = kindOfClothes
     }
 
-    fun setPricePerPiece(pricePerPiece: Float){
+    fun setPricePerPiece(pricePerPiece: Float) {
         this.pricePerPiece = pricePerPiece
         pricePerPieceTextView.text = "R$ " + String.format("%.2f", this.pricePerPiece) + " / item"
     }
