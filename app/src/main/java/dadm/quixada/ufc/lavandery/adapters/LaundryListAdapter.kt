@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import dadm.quixada.ufc.lavandery.R
-import dadm.quixada.ufc.lavandery.internalModels.LaundryListItem
-import dadm.quixada.ufc.lavandery.internalModels.Order
+import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
 
-class LaundryListAdapter(private val context:Activity, private val laundryList: ArrayList<LaundryListItem>):
-    ArrayAdapter<LaundryListItem>(context, R.layout.order_list_item, laundryList){
+class LaundryListAdapter(private val context:Activity, private val laundryBasket: ArrayList<LaundryBasketItem>):
+    ArrayAdapter<LaundryBasketItem>(context, R.layout.order_list_item, laundryBasket){
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -21,11 +20,11 @@ class LaundryListAdapter(private val context:Activity, private val laundryList: 
         val itemQuantityView: TextView = view.findViewById(R.id.item_quantity_in_basquet)
         val itemValueView: TextView = view.findViewById(R.id.price_by_type)
 
-        val laundryListItem: LaundryListItem = laundryList[position]
+        val laundryBasketItem: LaundryBasketItem = laundryBasket[position]
 
-        itemTypeView.text = laundryListItem.itemType
-        itemQuantityView.text = laundryListItem.quantity.toString()+"x"
-        itemValueView.text = "R$ "+String.format("%.2f", laundryListItem.unitaryValue)
+        itemTypeView.text = laundryBasketItem.partType
+        itemQuantityView.text = laundryBasketItem.quantity.toString()+"x"
+        itemValueView.text = "R$ "+String.format("%.2f", laundryBasketItem.pricePerPiece)
 
         return view
     }

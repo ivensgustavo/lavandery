@@ -25,10 +25,17 @@ class HomeFragment : Fragment() {
 
         val btnNewOrder: Button = view.findViewById(R.id.btn_new_order)
         btnNewOrder.setOnClickListener {
+
+            val bundle: Bundle = Bundle()
+            bundle.putString("laundry_provider_id", "hJRIGH85h1TeS9PBE6yi")
+
+            val newOrderFragment: NewOrderFragment = NewOrderFragment()
+            newOrderFragment.arguments = bundle
+
             val fragmentManager = requireActivity().supportFragmentManager
             fragmentManager.beginTransaction().apply {
-                replace(R.id.container_screens, NewOrderFragment())
-                addToBackStack("New order screen")
+                replace(R.id.container_screens, newOrderFragment)
+                addToBackStack(null)
                 commit()
             }
         }

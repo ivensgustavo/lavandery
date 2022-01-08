@@ -7,12 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ListView
 import androidx.core.content.ContextCompat
 import dadm.quixada.ufc.lavandery.R
-import dadm.quixada.ufc.lavandery.adapters.LaundryListAdapter
-import dadm.quixada.ufc.lavandery.internalModels.LaundryListItem
-import dadm.quixada.ufc.lavandery.internalModels.Order
 
 
 class OrderStatusFragment : Fragment() {

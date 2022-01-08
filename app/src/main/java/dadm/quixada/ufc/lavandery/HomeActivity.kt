@@ -24,6 +24,8 @@ class HomeActivity : AppCompatActivity() {
 
         changeCurrentFragment(homeFragment)
         setBottomNavigationActions()
+
+
     }
 
     private fun setBottomNavigationActions() {

@@ -9,15 +9,13 @@ import android.widget.ListView
 import android.widget.TextView
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.LaundryListAdapter
-import dadm.quixada.ufc.lavandery.internalModels.LaundryListItem
-import kotlin.math.round
-import kotlin.math.roundToLong
+import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
 
 class OrderBasketFragment : Fragment() {
 
     private lateinit var orderBasketListView: ListView
     private var orderTotalValue: Float = 0.0f
-    private lateinit var orderBasket: ArrayList<LaundryListItem>
+    private lateinit var orderBasket: ArrayList<LaundryBasketItem>
     private lateinit var orderTotalTextView: TextView
 
     override fun onCreateView(
@@ -39,7 +37,7 @@ class OrderBasketFragment : Fragment() {
         orderTotalTextView = view.findViewById(R.id.order_basket_total)
     }
 
-   fun setOrderBasket(orderBasket: ArrayList<LaundryListItem>){
+   fun setOrderBasket(orderBasket: ArrayList<LaundryBasketItem>){
        this.orderBasket = orderBasket
        this.updateListWithItems()
    }

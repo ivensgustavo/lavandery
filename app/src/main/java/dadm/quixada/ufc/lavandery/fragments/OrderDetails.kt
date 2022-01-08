@@ -2,19 +2,13 @@ package dadm.quixada.ufc.lavandery.fragments
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.ListView
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import dadm.quixada.ufc.lavandery.R
-import dadm.quixada.ufc.lavandery.adapters.LaundryListAdapter
-import dadm.quixada.ufc.lavandery.internalModels.LaundryListItem
+import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
 import dadm.quixada.ufc.lavandery.internalModels.Order
 import dadm.quixada.ufc.lavandery.models.Address
 import java.time.LocalDate
@@ -62,17 +56,17 @@ class OrderDetails : Fragment() {
         val orderbasketFragment =
             childFragmentManager.findFragmentById(R.id.order_basket_fragment) as OrderBasketFragment
 
-        val laundryList: ArrayList<LaundryListItem> = ArrayList()
+        val laundryBasket: ArrayList<LaundryBasketItem> = ArrayList()
 
-        laundryList.add(LaundryListItem("Camiseta", 7, 3.0.toFloat()))
-        laundryList.add(LaundryListItem("Camisa", 2, 5.0.toFloat()))
-        laundryList.add(LaundryListItem("Short", 3, 4.0.toFloat()))
-        laundryList.add(LaundryListItem("Calças", 7, 3.0.toFloat()))
-        laundryList.add(LaundryListItem("Vestido", 2, 5.0.toFloat()))
-        laundryList.add(LaundryListItem("Saia", 3, 4.0.toFloat()))
-        laundryList.add(LaundryListItem("Casaco", 7, 3.0.toFloat()))
+        laundryBasket.add(LaundryBasketItem("Camiseta", 7, 3.0.toFloat()))
+        laundryBasket.add(LaundryBasketItem("Camisa", 2, 5.0.toFloat()))
+        laundryBasket.add(LaundryBasketItem("Short", 3, 4.0.toFloat()))
+        laundryBasket.add(LaundryBasketItem("Calças", 7, 3.0.toFloat()))
+        laundryBasket.add(LaundryBasketItem("Vestido", 2, 5.0.toFloat()))
+        laundryBasket.add(LaundryBasketItem("Saia", 3, 4.0.toFloat()))
+        laundryBasket.add(LaundryBasketItem("Casaco", 7, 3.0.toFloat()))
 
-        orderbasketFragment.setOrderBasket(laundryList)
+        orderbasketFragment.setOrderBasket(laundryBasket)
         orderbasketFragment.setOrderTotal(170.0f)
     }
 

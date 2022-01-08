@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dadm.quixada.ufc.lavandery.R
+import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
 
 
 class NewOrderFragment : Fragment() {
@@ -28,13 +29,13 @@ class NewOrderFragment : Fragment() {
     private var qtyOrderItems: Int = 0
     private var totalOrderValue: Float = 0.0f
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_order, container, false)
+       return inflater.inflate(R.layout.fragment_new_order, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,14 +58,6 @@ class NewOrderFragment : Fragment() {
 
         btnGoCheckout.setOnClickListener {
             goCheckout()
-        }
-    }
-
-    private fun goCheckout(){
-        requireActivity().supportFragmentManager.beginTransaction().apply {
-            replace(R.id.container_screens, CheckoutFragment())
-            addToBackStack("Checkout screen")
-            commit()
         }
     }
 
@@ -124,6 +117,69 @@ class NewOrderFragment : Fragment() {
 
         counterAgasalhos.setKindOfClothes("Agasalhos")
         counterShortsJeans.setPricePerPiece(6.0f)
+    }
+
+    private fun goCheckout(){
+
+        val laundryProviderId = arguments?.get("laundry_provider_id") as String
+        val laundryBasket = createLaundryBasket()
+
+        val bundle = Bundle()
+        bundle.putString("laundry_provider_id", laundryProviderId)
+        bundle.putSerializable("laundry_basket", laundryBasket)
+
+        val checkoutFragment= CheckoutFragment()
+        checkoutFragment.arguments = bundle
+
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.container_screens, checkoutFragment)
+            addToBackStack("Checkout screen")
+            commit()
+        }
+    }
+
+
+    private fun createLaundryBasket(): ArrayList<LaundryBasketItem>{
+
+        val laundryBasket: ArrayList<LaundryBasketItem> = ArrayList()
+
+        if(counterCamisas.getLaundryBasketItem().quantity > 0){
+            laundryBasket.add(counterCamisas.getLaundryBasketItem())
+        }
+
+        if(counterCamisetas.getLaundryBasketItem().quantity > 0){
+            laundryBasket.add(counterCamisetas.getLaundryBasketItem())
+        }
+
+        if(counterBermudas.getLaundryBasketItem().quantity > 0){
+            laundryBasket.add(counterBermudas.getLaundryBasketItem())
+        }
+
+        if(counterShortsLeves.getLaundryBasketItem().quantity > 0){
+            laundryBasket.add(counterShortsLeves.getLaundryBasketItem())
+        }
+
+        if(counterShortsJeans.getLaundryBasketItem().quantity > 0){
+            laundryBasket.add(counterShortsJeans.getLaundryBasketItem())
+        }
+
+        if(counterCalcas.getLaundryBasketItem().quantity > 0){
+            laundryBasket.add(counterCalcas.getLaundryBasketItem())
+        }
+
+        if(counterSaias.getLaundryBasketItem().quantity > 0){
+            laundryBasket.add(counterSaias.getLaundryBasketItem())
+        }
+
+        if(counterVestidos.getLaundryBasketItem().quantity > 0){
+            laundryBasket.add(counterVestidos.getLaundryBasketItem())
+        }
+
+        if(counterAgasalhos.getLaundryBasketItem().quantity > 0){
+            laundryBasket.add(counterAgasalhos.getLaundryBasketItem())
+        }
+
+        return laundryBasket
     }
 
     fun getQtyOrderItems():Int {

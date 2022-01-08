@@ -9,17 +9,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import dadm.quixada.ufc.lavandery.R
+import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
 
 
 class CountPartsFragment : Fragment() {
 
-    private lateinit var kindOfClothesTextView: TextView
+    private lateinit var partTypeTextView: TextView
     private lateinit var pricePerPieceTextView: TextView
     private lateinit var btnIncrementItems: Button
     private lateinit var btnDecrementItems: Button
     private lateinit var itemsTextView: TextView
-    private var items: Int = 0
-    private var pricePerPiece: Float = 0.0f
+    private var laundryBasketItem: LaundryBasketItem =
+        LaundryBasketItem("", 0, 0.0f)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +37,7 @@ class CountPartsFragment : Fragment() {
     }
 
     private fun initializeViews(view: View) {
-        kindOfClothesTextView = view.findViewById(R.id.kind_of_clothes)
+        partTypeTextView = view.findViewById(R.id.kind_of_clothes)
         pricePerPieceTextView = view.findViewById(R.id.price_per_piece)
         btnIncrementItems = view.findViewById(R.id.btn_increment_item_qty)
         btnDecrementItems = view.findViewById(R.id.btn_decrement_item_qty)
@@ -48,39 +49,44 @@ class CountPartsFragment : Fragment() {
 
     private fun incrementItems() {
 
-        if (items >= 0) {
-            items++
-            itemsTextView.text = items.toString()
+        if (laundryBasketItem.quantity >= 0) {
+            laundryBasketItem.quantity++
+            itemsTextView.text = laundryBasketItem.quantity.toString()
             val newOrderFragment = parentFragment as NewOrderFragment
             Log.d("total de item do pedido", newOrderFragment.getQtyOrderItems().toString())
             newOrderFragment.setQtyOrderItems(newOrderFragment.getQtyOrderItems() + 1)
             newOrderFragment.setTotalOrderValue(
-                newOrderFragment.getTotalOrderValue() + this.pricePerPiece
+                newOrderFragment.getTotalOrderValue() + this.laundryBasketItem.pricePerPiece
             )
         }
 
     }
 
     private fun decrementItems() {
-        if (items > 0) {
-            items--
-            itemsTextView.text = items.toString()
+        if (laundryBasketItem.quantity > 0) {
+            laundryBasketItem.quantity--
+            itemsTextView.text = laundryBasketItem.toString()
             val newOrderFragment = parentFragment as NewOrderFragment
             newOrderFragment.setQtyOrderItems(newOrderFragment.getQtyOrderItems() - 1)
             newOrderFragment.setTotalOrderValue(
-                newOrderFragment.getTotalOrderValue() - this.pricePerPiece
+                newOrderFragment.getTotalOrderValue() - laundryBasketItem.pricePerPiece
             )
         }
     }
 
     fun setKindOfClothes(kindOfClothes: String) {
-        kindOfClothesTextView.text = kindOfClothes
+        partTypeTextView.text = kindOfClothes
+        laundryBasketItem.partType = kindOfClothes
     }
 
     fun setPricePerPiece(pricePerPiece: Float) {
-        this.pricePerPiece = pricePerPiece
-        pricePerPieceTextView.text = "R$ " + String.format("%.2f", this.pricePerPiece) + " / item"
+        this.laundryBasketItem.pricePerPiece = pricePerPiece
+        pricePerPieceTextView.text =
+            "R$ " + String.format("%.2f", pricePerPiece) + " / item"
     }
 
+    fun getLaundryBasketItem(): LaundryBasketItem {
+        return laundryBasketItem
+    }
 
 }
