@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
 import dadm.quixada.ufc.lavandery.internalModels.Order
 import dadm.quixada.ufc.lavandery.models.Address
-import java.time.LocalDate
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class OrderDetails : Fragment() {
@@ -26,7 +26,6 @@ class OrderDetails : Fragment() {
         return inflater.inflate(R.layout.fragment_order_details, container, false)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -35,9 +34,9 @@ class OrderDetails : Fragment() {
             "GH7N78DH4G",
             30,
             70.0.toFloat(),
-            LocalDate.parse("2021-12-08"),
-            LocalDate.parse("2021-12-09"),
-            LocalDate.parse("2021-12-10"),
+            Date(2021, 12, 8),
+            Date(2021, 12, 9),
+            Date(2021, 12, 10),
             "Agendado")
 
         this.changeStatus()

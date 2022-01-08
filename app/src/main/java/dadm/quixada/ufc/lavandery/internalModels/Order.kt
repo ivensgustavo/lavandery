@@ -1,7 +1,7 @@
 package dadm.quixada.ufc.lavandery.internalModels
 
-import java.time.LocalDate
+import java.util.*
 
 class Order(var consumerId: String, var provider_id: String, var qtyItens: Int,var value: Float,
-            var creationDate: LocalDate, var collectionDate: LocalDate, var deliveryDate: LocalDate, var status: String) {
+            var creationDate: Date, var collectionDate: Date, var deliveryDate: Date, var status: String) {
 }

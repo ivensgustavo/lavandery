@@ -17,6 +17,7 @@ import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.fragments.OrderDetails
 import dadm.quixada.ufc.lavandery.internalModels.Order
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -37,7 +38,7 @@ class OrdersAdapter(private val context:Activity, private val orderList: ArrayLi
         val orderStatusImageView: ImageView = view.findViewById(R.id.order_status_icon)
         val bgIconOrderStatus: LinearLayout = view.findViewById(R.id.bg_icon_order_status)
 
-        orderDateTextView.text = fomatData(order.creationDate)
+        orderDateTextView.text = formatData(order.creationDate)
         orderStatusTextView.text = order.status
         orderQtyItemsTextView.text = order.qtyItens.toString() + " items"
         orderStatusImageView.setImageResource(resolveIcon(order.status))
@@ -46,12 +47,12 @@ class OrdersAdapter(private val context:Activity, private val orderList: ArrayLi
         return view
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun fomatData(dt: LocalDate): String {
-        val formatter = DateTimeFormatter
-            .ofPattern("dd MMM YYYY", Locale("pt-br"))
 
-        return  formatter.format(dt)
+    private fun formatData(dt: Date): String {
+        val format = "dd MMM yyyy"
+        val sdf = SimpleDateFormat(format, Locale("pt-br"))
+
+        return sdf.format(dt)
     }
 
     private fun resolveIcon(status: String): Int{
