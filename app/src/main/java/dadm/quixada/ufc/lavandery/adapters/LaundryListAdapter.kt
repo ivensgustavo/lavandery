@@ -24,7 +24,7 @@ class LaundryListAdapter(private val context:Activity, private val laundryBasket
 
         itemTypeView.text = laundryBasketItem.partType
         itemQuantityView.text = laundryBasketItem.quantity.toString()+"x"
-        itemValueView.text = "R$ "+String.format("%.2f", laundryBasketItem.pricePerPiece)
+        itemValueView.text = "R$ "+String.format("%.2f", laundryBasketItem.pricePerPiece * laundryBasketItem.quantity)
 
         return view
     }

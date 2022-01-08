@@ -43,6 +43,9 @@ class CountPartsFragment : Fragment() {
         btnDecrementItems = view.findViewById(R.id.btn_decrement_item_qty)
         itemsTextView = view.findViewById(R.id.items_quantity)
 
+        pricePerPieceTextView.text = laundryBasketItem.pricePerPiece.toString()
+        itemsTextView.text = laundryBasketItem.quantity.toString()
+
         btnIncrementItems.setOnClickListener { incrementItems() }
         btnDecrementItems.setOnClickListener { decrementItems() }
     }
@@ -65,7 +68,7 @@ class CountPartsFragment : Fragment() {
     private fun decrementItems() {
         if (laundryBasketItem.quantity > 0) {
             laundryBasketItem.quantity--
-            itemsTextView.text = laundryBasketItem.toString()
+            itemsTextView.text = laundryBasketItem.quantity.toString()
             val newOrderFragment = parentFragment as NewOrderFragment
             newOrderFragment.setQtyOrderItems(newOrderFragment.getQtyOrderItems() - 1)
             newOrderFragment.setTotalOrderValue(
