@@ -6,15 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import dadm.quixada.ufc.lavandery.EditCellPhoneActivity
-import dadm.quixada.ufc.lavandery.EditEmailActivity
-import dadm.quixada.ufc.lavandery.EditName
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.AccountSettingAdapter
 import dadm.quixada.ufc.lavandery.internalModels.AccountSetting

@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.Toast
-import dadm.quixada.ufc.lavandery.AccountSettings
 import dadm.quixada.ufc.lavandery.ConsumerPreferencesActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.SettingsAdapter
