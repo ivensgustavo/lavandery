@@ -3,6 +3,7 @@ package dadm.quixada.ufc.lavandery
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,6 +31,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setBottomNavigationActions() {
         val bottomNavigationMenu: BottomNavigationView = findViewById(R.id.bottom_navigation_menu)
+        bottomNavigationMenu.visibility = View.VISIBLE
         bottomNavigationMenu.setOnNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.home_nav_button -> changeCurrentFragment(homeFragment)
@@ -46,5 +48,16 @@ class HomeActivity : AppCompatActivity() {
             replace(R.id.container_screens, fragment)
             commit()
         }
+    }
+
+    fun cleanBackStack(){
+        for(i in 0 until supportFragmentManager.backStackEntryCount){
+            supportFragmentManager.popBackStack()
+        }
+    }
+
+    fun showBottomNavigation(){
+        val bottomNavigationMenu: BottomNavigationView = findViewById(R.id.bottom_navigation_menu)
+        bottomNavigationMenu.visibility = View.VISIBLE
     }
 }

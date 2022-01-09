@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
 
 class HomeFragment : Fragment() {
@@ -23,13 +24,16 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val homeActivity = requireActivity() as HomeActivity
+        homeActivity.showBottomNavigation()
+
         val btnNewOrder: Button = view.findViewById(R.id.btn_new_order)
         btnNewOrder.setOnClickListener {
 
-            val bundle: Bundle = Bundle()
+            val bundle = Bundle()
             bundle.putString("laundry_provider_id", "hJRIGH85h1TeS9PBE6yi")
 
-            val newOrderFragment: NewOrderFragment = NewOrderFragment()
+            val newOrderFragment = NewOrderFragment()
             newOrderFragment.arguments = bundle
 
             val fragmentManager = requireActivity().supportFragmentManager

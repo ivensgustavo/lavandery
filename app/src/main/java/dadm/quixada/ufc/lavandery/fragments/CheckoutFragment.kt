@@ -2,7 +2,8 @@ package dadm.quixada.ufc.lavandery.fragments
 
 
 import android.app.DatePickerDialog
-import android.os.Build
+import android.content.Intent
+
 
 import android.os.Bundle
 import android.util.Log
@@ -16,9 +17,14 @@ import dadm.quixada.ufc.lavandery.adapters.LaundryListAdapter
 import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
 import android.view.View.MeasureSpec
 import android.widget.*
-import androidx.annotation.RequiresApi
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import dadm.quixada.ufc.lavandery.HomeActivity
+import dadm.quixada.ufc.lavandery.internalModels.Order
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,8 +36,12 @@ class CheckoutFragment : Fragment() {
     private lateinit var btnSelectDeliveryDate: Button
     private lateinit var collectionDateTextView: TextView
     private lateinit var deliveryDateTextView: TextView
+    private lateinit var collectionTimeRadioGroup: RadioGroup
+    private lateinit var deliveryTimeRadioGroup: RadioGroup
+    private lateinit var btnConfirmAndSchedule: Button
     private var collectionDate: Date = Date()
     private var deliveryDate: Date = Date()
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,21 +51,106 @@ class CheckoutFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_checkout, container, false)
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initializeBasketListView(view)
         initializeViews(view)
         configureDateSelectButtons()
+
+        mAuth = FirebaseAuth.getInstance()
+
+        Log.d(
+            "Pilha de fragmentos",
+            requireActivity().supportFragmentManager.backStackEntryCount.toString()
+        )
     }
 
-    private fun initializeViews(view:View){
+    private fun initializeViews(view: View) {
         this.btnSelectCollectionDate = view.findViewById(R.id.btn_select_collection_date)
         this.btnSelectDeliveryDate = view.findViewById(R.id.btn_select_delivery_date)
         this.collectionDateTextView = view.findViewById(R.id.checkout_collection_date)
         this.deliveryDateTextView = view.findViewById(R.id.checkout_delivery_date)
+        this.collectionTimeRadioGroup = view.findViewById(R.id.radio_group_collection_time)
+        this.deliveryTimeRadioGroup = view.findViewById(R.id.radio_group_delivery_time)
+        this.btnConfirmAndSchedule = view.findViewById(R.id.btn_confirm_and_schedule)
+
+        this.btnConfirmAndSchedule.setOnClickListener {
+            createOrder(view)
+        }
+    }
+
+    private fun createOrder(view: View) {
+        val collecionTimeSelected: String =
+            view.findViewById<RadioButton>(this.collectionTimeRadioGroup.checkedRadioButtonId)
+                .toString()
+        val delyveryTimeSelected: String =
+            view.findViewById<RadioButton>(this.deliveryTimeRadioGroup.checkedRadioButtonId)
+                .toString()
+
+        val list: ArrayList<LaundryBasketItem> =
+            arguments?.get("laundry_basket") as ArrayList<LaundryBasketItem>
+
+        val currentUserId = mAuth.currentUser!!.uid
+
+        val order =
+            Order(
+                arguments?.get("laundry_provider_id") as String,
+                currentUserId,
+                list.size,
+                60.0f,
+                Date(),
+                this.collectionDate,
+                this.deliveryDate,
+                "Solicitado",
+                collecionTimeSelected,
+                delyveryTimeSelected
+            )
+
+
+        val db = Firebase.firestore
+
+
+        db.collection("users").document(currentUserId).collection("orders")
+            .add(order)
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    showConfirmationMessage()
+                } else {
+                    Snackbar.make(
+                        requireContext(),
+                        view,
+                        "Ocorreu um erro ao enviar seu pedido. Tente novamente",
+                        Snackbar.LENGTH_SHORT
+                    )
+                }
+            }
+
+
+    }
+
+    private fun showConfirmationMessage() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Pedido enviado")
+            .setMessage(
+                "Seu pedido foi enviado para a pessoa que você escolheu para lavar suas roupas. " +
+                        "Fique atento a resposta a seu pedido"
+            )
+            .setPositiveButton("Ok") { dialog, which ->
+                navigateToHome()
+            }
+            .show()
+    }
+
+    private fun navigateToHome() {
+        val activity = requireActivity() as HomeActivity
+        activity.cleanBackStack()
+
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.container_screens, HomeFragment())
+            addToBackStack("home_fragment")
+            commit()
+        }
     }
 
     private fun initializeBasketListView(view: View) {
@@ -69,7 +164,7 @@ class CheckoutFragment : Fragment() {
 
     }
 
-    private fun configureDateSelectButtons(){
+    private fun configureDateSelectButtons() {
         val myCalendar: Calendar = Calendar.getInstance()
 
         val datePickerCollectionDate =
