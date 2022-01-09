@@ -3,4 +3,5 @@
     <integer name="REQUEST_EDIT_NAME">1</integer>
     <integer name="REQUEST_EDIT_EMAIL">2</integer>
     <integer name="REQUEST_EDIT_CELL_PHONE">3</integer>
+    <integer name="REQUEST_IMAGE_PROFILE">4</integer>
 </resources>

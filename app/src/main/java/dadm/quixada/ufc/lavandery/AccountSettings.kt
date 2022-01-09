@@ -1,11 +1,18 @@
 package dadm.quixada.ufc.lavandery
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
+import android.widget.Button
+import android.widget.ImageView
 
 import android.widget.ListView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,6 +29,8 @@ class AccountSettings : AppCompatActivity() {
     private lateinit var btnSignOutApp: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var profileImageView: ImageView
+    private lateinit var btnChangeImageProfile: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +41,8 @@ class AccountSettings : AppCompatActivity() {
         accountSettingsAdapter = AccountSettingAdapter(this, accountSettingsList)
         accountSettingsListView.adapter = accountSettingsAdapter
 
-        btnSignOutApp = findViewById(R.id.btn_sign_out_app)
+        initializeViews()
+
         mAuth = FirebaseAuth.getInstance()
 
         // Configure Google Sign In
@@ -44,6 +54,26 @@ class AccountSettings : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         configureSignOutAppButton()
+
+        val currentUser = mAuth.currentUser
+        Glide.with(this).load(currentUser?.photoUrl).into(profileImageView)
+
+    }
+
+    private fun initializeViews(){
+        profileImageView = findViewById(R.id.profile_image_view)
+        btnChangeImageProfile = findViewById(R.id.button_change_image_profile)
+        btnSignOutApp = findViewById(R.id.btn_sign_out_app)
+
+        btnChangeImageProfile.setOnClickListener { selectImageProfile() }
+
+
+    }
+
+    private fun selectImageProfile(){
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, R.integer.REQUEST_IMAGE_PROFILE)
     }
 
     private fun populateAccountSettingsList(): ArrayList<AccountSetting> {
@@ -63,7 +93,14 @@ class AccountSettings : AppCompatActivity() {
             R.integer.RESULT_EDIT_NAME -> updateName(data)
             R.integer.RESULT_EDIT_EMAIL -> updateEmail(data)
             R.integer.RESULT_EDIT_CELL_PHONE -> updateCellPhone(data)
+            else -> updateProfileImage(data)
         }
+    }
+
+    private fun updateProfileImage(data: Intent?){
+        val imageUri = data?.data
+        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageUri)
+        profileImageView.setImageDrawable(BitmapDrawable(bitmap))
     }
 
     private fun updateName(data: Intent?) {
