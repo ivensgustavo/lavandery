@@ -31,9 +31,8 @@ class AccountSettingAdapter(
         val accountSettingValue: TextView = view.findViewById(R.id.account_setting_value)
         val accountSettingEditLink: TextView = view.findViewById(R.id.open_account_setting_button)
 
-
         accountSettingName.text = accountSetting.name
-        accountSettingValue.text = accountSetting.value + accountSetting.complementValue
+        accountSettingValue.text = accountSetting.value + " " +accountSetting.complementValue
 
         accountSettingEditLink.setOnClickListener {
             when (accountSetting.name) {
