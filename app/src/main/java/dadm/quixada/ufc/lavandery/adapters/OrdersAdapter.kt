@@ -40,7 +40,7 @@ class OrdersAdapter(private val context:Activity, private val orderList: ArrayLi
 
         orderDateTextView.text = formatData(order.creationDate)
         orderStatusTextView.text = order.status
-        orderQtyItemsTextView.text = order.qtyItens.toString() + " items"
+        orderQtyItemsTextView.text = order.totalItems.toString() + " items"
         orderStatusImageView.setImageResource(resolveIcon(order.status))
         bgIconOrderStatus.setBackgroundResource(resolveColor(order.status))
 

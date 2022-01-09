@@ -127,6 +127,7 @@ class NewOrderFragment : Fragment() {
         val bundle = Bundle()
         bundle.putString("laundry_provider_id", laundryProviderId)
         bundle.putSerializable("laundry_basket", laundryBasket)
+        bundle.putFloat("laundry_basket_value", this.totalOrderValue)
 
         val checkoutFragment= CheckoutFragment()
         checkoutFragment.arguments = bundle

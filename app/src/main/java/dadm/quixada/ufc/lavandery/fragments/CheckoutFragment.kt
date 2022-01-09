@@ -2,11 +2,9 @@ package dadm.quixada.ufc.lavandery.fragments
 
 
 import android.app.DatePickerDialog
-import android.content.Intent
 
 
 import android.os.Bundle
-import android.util.Log
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -39,8 +37,15 @@ class CheckoutFragment : Fragment() {
     private lateinit var collectionTimeRadioGroup: RadioGroup
     private lateinit var deliveryTimeRadioGroup: RadioGroup
     private lateinit var btnConfirmAndSchedule: Button
+    private lateinit var totalItemsTextView: TextView
+    private lateinit var laundryBasketTotalTextView: TextView
+    private lateinit var ordertotalTextView: TextView
     private var collectionDate: Date = Date()
     private var deliveryDate: Date = Date()
+    private var laundryBasket: ArrayList<LaundryBasketItem> = ArrayList()
+    private var laundryBasketTotalValue: Float = 0.0f
+    private var orderTotalValue: Float = 0.0f
+
     private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(
@@ -54,16 +59,15 @@ class CheckoutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        this.laundryBasket = arguments?.get("laundry_basket") as ArrayList<LaundryBasketItem>
+        this.laundryBasketTotalValue = arguments?.get("laundry_basket_value") as Float
+        this.orderTotalValue = this.laundryBasketTotalValue + 10
+
         initializeBasketListView(view)
         initializeViews(view)
         configureDateSelectButtons()
 
         mAuth = FirebaseAuth.getInstance()
-
-        Log.d(
-            "Pilha de fragmentos",
-            requireActivity().supportFragmentManager.backStackEntryCount.toString()
-        )
     }
 
     private fun initializeViews(view: View) {
@@ -74,44 +78,36 @@ class CheckoutFragment : Fragment() {
         this.collectionTimeRadioGroup = view.findViewById(R.id.radio_group_collection_time)
         this.deliveryTimeRadioGroup = view.findViewById(R.id.radio_group_delivery_time)
         this.btnConfirmAndSchedule = view.findViewById(R.id.btn_confirm_and_schedule)
+        this.totalItemsTextView = view.findViewById(R.id.checkout_total_basket_items)
+        this.laundryBasketTotalTextView = view.findViewById(R.id.checkout_total_basket_value)
+        this.ordertotalTextView = view.findViewById(R.id.checkout_total_order_value)
+
+        this.totalItemsTextView.text = this.laundryBasket.size.toString()+ " items"
+        this.laundryBasketTotalTextView.text = "R$ " + String.format("%.2f", this.laundryBasketTotalValue)
+        this.ordertotalTextView.text = "R$ " + String.format("%.2f", this.orderTotalValue)
 
         this.btnConfirmAndSchedule.setOnClickListener {
-            createOrder(view)
+            sendOrder(view)
         }
     }
 
-    private fun createOrder(view: View) {
-        val collecionTimeSelected: String =
-            view.findViewById<RadioButton>(this.collectionTimeRadioGroup.checkedRadioButtonId)
-                .toString()
-        val delyveryTimeSelected: String =
-            view.findViewById<RadioButton>(this.deliveryTimeRadioGroup.checkedRadioButtonId)
-                .toString()
 
-        val list: ArrayList<LaundryBasketItem> =
-            arguments?.get("laundry_basket") as ArrayList<LaundryBasketItem>
+    private fun getCollectionTimeSelected(view: View): String {
+        return view.findViewById<RadioButton>(this.collectionTimeRadioGroup.checkedRadioButtonId)
+            .text.toString()
+    }
 
-        val currentUserId = mAuth.currentUser!!.uid
+    private fun getDeliveryTimeSelected(view: View): String {
+        return view.findViewById<RadioButton>(this.deliveryTimeRadioGroup.checkedRadioButtonId)
+            .text.toString()
+    }
 
-        val order =
-            Order(
-                arguments?.get("laundry_provider_id") as String,
-                currentUserId,
-                list.size,
-                60.0f,
-                Date(),
-                this.collectionDate,
-                this.deliveryDate,
-                "Solicitado",
-                collecionTimeSelected,
-                delyveryTimeSelected
-            )
-
+    private fun sendOrder(view: View) {
+        val order = createOrder(view)
 
         val db = Firebase.firestore
 
-
-        db.collection("users").document(currentUserId).collection("orders")
+        db.collection("orders")
             .add(order)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -127,6 +123,28 @@ class CheckoutFragment : Fragment() {
             }
 
 
+    }
+
+    private fun createOrder(view: View): Order {
+        val consumerId = mAuth.currentUser!!.uid
+        val providerId = arguments?.get("laundry_provider_id") as String
+        val totalItems = this.laundryBasket.size
+        val collectionTimeSelected = getCollectionTimeSelected(view)
+        val deliveryTimeSelected = getDeliveryTimeSelected(view)
+
+        return Order(
+            consumerId,
+            providerId,
+            totalItems,
+            this.laundryBasket,
+            this.orderTotalValue,
+            Date(),
+            this.collectionDate,
+            this.deliveryDate,
+            "Enviado",
+            collectionTimeSelected,
+            deliveryTimeSelected
+        )
     }
 
     private fun showConfirmationMessage() {
