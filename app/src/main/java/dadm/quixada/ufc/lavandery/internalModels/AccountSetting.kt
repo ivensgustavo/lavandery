@@ -1,6 +1,6 @@
 package dadm.quixada.ufc.lavandery.internalModels
 
-import android.app.Activity
+import androidx.fragment.app.Fragment
 
-class AccountSetting(var name: String, var value: String, var activity: Activity) {
+class AccountSetting(var name: String, var value: String) {
 }

@@ -79,13 +79,14 @@ class AccountSettings : AppCompatActivity() {
     private fun populateAccountSettingsList(): ArrayList<AccountSetting> {
         val list: ArrayList<AccountSetting> = ArrayList()
 
-        list.add(AccountSetting("Nome", "Gustavo Ivens", EditName()))
-        list.add(AccountSetting("E-mail", "gustavoivens@gmail.com", EditEmailActivity()))
-        list.add(AccountSetting("Celular", "+55 88 992436247", EditCellPhoneActivity()))
+        list.add(AccountSetting("Nome", "Gustavo Ivens"))
+        //list.add(AccountSetting("E-mail", "gustavoivens@gmail.com", EditEmailActivity()))
+        //list.add(AccountSetting("Celular", "+55 88 992436247", EditCellPhoneActivity()))
 
         return list
     }
 
+    /*
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -124,7 +125,7 @@ class AccountSettings : AppCompatActivity() {
         val editedCellPhone = AccountSetting("Celular", cellPhone, EditCellPhoneActivity())
         this.accountSettingsList[2] = editedCellPhone
         this.accountSettingsAdapter.notifyDataSetChanged()
-    }
+    }*/
 
     private fun configureSignOutAppButton(){
         btnSignOutApp.setOnClickListener {

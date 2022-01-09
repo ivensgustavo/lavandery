@@ -41,7 +41,13 @@ class SettingsFragment : Fragment() {
         listView.setOnItemClickListener { adapterView, view, itemPosition, l ->
             when(itemPosition) {
                 0 -> openNewSettingGroup(ConsumerPreferencesActivity())
-                1 -> openNewSettingGroup(AccountSettings())
+                1 -> {
+                    requireActivity().supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.container_screens, AccountSettingsFragment())
+                        addToBackStack("account_settings_fragment")
+                        commit()
+                    }
+                }
                 else-> Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
             }
         }
