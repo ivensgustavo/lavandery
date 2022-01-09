@@ -33,11 +33,11 @@ class AccountSettingAdapter(
 
 
         accountSettingName.text = accountSetting.name
-        accountSettingValue.text = accountSetting.value
+        accountSettingValue.text = accountSetting.value + accountSetting.complementValue
 
         accountSettingEditLink.setOnClickListener {
             when (accountSetting.name) {
-                "Nome" -> openEditNameFragment(accountSetting.value)
+                "Nome" -> openEditNameFragment(accountSetting.value, accountSetting.complementValue)
                 "Email" -> openEditEmailFragment(accountSetting.value)
                 "Celular" -> openEditCellPhoneFragment(accountSetting.value)
             }
@@ -46,9 +46,10 @@ class AccountSettingAdapter(
         return view
     }
 
-    private fun openEditNameFragment(fullName: String){
+    private fun openEditNameFragment(name: String, surname: String){
         val bundle = Bundle()
-        bundle.putString("full_name", fullName)
+        bundle.putString("name", name)
+        bundle.putString("surname", surname)
 
         val editNameFragment = EditNameFragment()
         editNameFragment.arguments = bundle

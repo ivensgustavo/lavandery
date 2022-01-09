@@ -44,11 +44,11 @@ class EditNameFragment : Fragment() {
     }
 
     private fun fillFields() {
-        val fullName = arguments?.get("full_name") as String
-        val names = fullName.split(" ").toTypedArray()
+        val name = arguments?.get("name") as String
+        val surname = arguments?.get("surname") as String
 
-        nameEditText.setText(names[0])
-        surnameEditText.setText(names[1])
+        nameEditText.setText(name)
+        surnameEditText.setText(surname)
     }
 
     private fun backToPreviousScreen() {
