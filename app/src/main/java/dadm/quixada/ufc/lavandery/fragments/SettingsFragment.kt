@@ -38,8 +38,11 @@ class SettingsFragment : Fragment() {
         listView.adapter = adapter
 
         listView.setOnItemClickListener { adapterView, view, itemPosition, l ->
-            when(itemPosition) {
-                0 -> openNewSettingGroup(ConsumerPreferencesActivity())
+            when (itemPosition) {
+                0 -> openNewSettingGroup(
+                    ConsumerPreferencesFragment(),
+                    "consumer_preferences_fragment"
+                )
                 1 -> {
                     requireActivity().supportFragmentManager.beginTransaction().apply {
                         replace(R.id.container_screens, AccountSettingsFragment())
@@ -47,13 +50,16 @@ class SettingsFragment : Fragment() {
                         commit()
                     }
                 }
-                else-> Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
+                else -> Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun openNewSettingGroup(activity: Activity) {
-        val intent = Intent(context, activity::class.java)
-        startActivity(intent)
+    private fun openNewSettingGroup(fragment: Fragment, fragmentName: String) {
+        requireActivity().supportFragmentManager.beginTransaction().apply {
+            replace(R.id.container_screens, fragment)
+            addToBackStack(fragmentName)
+            commit()
+        }
     }
 }
