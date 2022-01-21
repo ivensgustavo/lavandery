@@ -11,6 +11,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.models.Address
+import java.util.*
 
 class AddressRegistrationActivity : AppCompatActivity() {
 
@@ -41,6 +42,7 @@ class AddressRegistrationActivity : AppCompatActivity() {
 
     private fun saveAddress() {
         val address = Address(
+            UUID.randomUUID().toString(),
             streetEditText.text.toString(),
             numberEditText.text.toString().toInt(),
             cepEditText.text.toString().toInt(),

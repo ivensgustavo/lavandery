@@ -10,6 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.R
 
 import dadm.quixada.ufc.lavandery.models.Address
@@ -19,7 +22,7 @@ class AddressAdapter(
     private val addressList: ArrayList<Address>
 ) : ArrayAdapter<Address>(context, R.layout.account_settings_list_item, addressList) {
 
-    private var currentAddressId: String = "1"
+    private var currentAddressId: String = ""
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -47,13 +50,30 @@ class AddressAdapter(
             }
             else {
                 addressList.remove(addressList[position])
+                removeAddress(addressList)
                 this.notifyDataSetChanged()
             }
-
-
         }
 
         return view
+    }
+
+    private fun removeAddress(addressList: ArrayList<Address>){
+        val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+        val userId = mAuth.currentUser!!.uid
+        val db = Firebase.firestore
+
+        db.collection("users").document(userId)
+            .update("addresses", addressList)
+            .addOnCompleteListener { task ->
+                if(!task.isSuccessful){
+                    Toast.makeText(
+                        context,
+                        "Ocorreu um erro ao remover o endereço.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
     }
 
 
