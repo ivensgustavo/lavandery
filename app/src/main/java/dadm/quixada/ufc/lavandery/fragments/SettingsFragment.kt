@@ -8,7 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.ConsumerPreferencesActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.SettingsAdapter
@@ -26,6 +30,8 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initializeUserName(view)
 
         val settingsList: ArrayList<SettingItem> = ArrayList()
 
@@ -61,5 +67,23 @@ class SettingsFragment : Fragment() {
             addToBackStack(fragmentName)
             commit()
         }
+    }
+
+    private fun initializeUserName(view: View){
+
+        val helloUserTextView: TextView = view.findViewById(R.id.user_name_in_settings_screen)
+
+        val mAuth = FirebaseAuth.getInstance()
+        val userId = mAuth.currentUser!!.uid
+        val db = Firebase.firestore
+
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if(document != null){
+                    val name = document.data!!["name"].toString()
+                    helloUserTextView.text = name
+                }
+            }
     }
 }

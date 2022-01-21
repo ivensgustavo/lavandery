@@ -8,7 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
 
@@ -51,5 +56,21 @@ class HomeFragment : Fragment() {
             val dialog = SelectAddressFragment()
             dialog.show(requireActivity().supportFragmentManager, "my addresses fragment")
         }
+
+
+        val helloTextView: TextView = view.findViewById(R.id.hello_text)
+
+        val mAuth = FirebaseAuth.getInstance()
+        val userId = mAuth.currentUser!!.uid
+        val db = Firebase.firestore
+
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if(document != null){
+                    val name = document.data!!["name"].toString()
+                    helloTextView.text = "Olá, $name"
+                }
+            }
     }
 }

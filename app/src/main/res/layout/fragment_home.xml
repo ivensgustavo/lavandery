@@ -20,9 +20,10 @@
             android:paddingBottom="8dp">
 
             <TextView
+                android:id="@+id/hello_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Olá, Gustavo"
+                android:text="Olá,"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
