@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
 
@@ -42,6 +43,13 @@ class HomeFragment : Fragment() {
                 addToBackStack(null)
                 commit()
             }
+        }
+
+        val btnOpenMyAddressBottomSheet: Button = view.findViewById(R.id.btn_open_my_address_bottom_sheet)
+
+        btnOpenMyAddressBottomSheet.setOnClickListener {
+            val dialog = SelectAddressFragment()
+            dialog.show(requireActivity().supportFragmentManager, "my addresses fragment")
         }
     }
 }

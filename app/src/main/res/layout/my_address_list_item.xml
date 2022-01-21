@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:gravity="center">
+           <TextView
+               android:id="@+id/short_address"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Endereço aqui"
+               android:textColor="@color/black"
+               android:textSize="14sp" />
+
+           <ImageView
+               android:id="@+id/selected_address"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="8dp"
+               android:src="@drawable/ic_check"
+               android:visibility="gone"/>
+       </LinearLayout>
+
+       <ImageView
+           android:id="@+id/btn_remove_address"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentEnd="true"
+           android:src="@drawable/ic_delete" />
+   </RelativeLayout>
+
+</LinearLayout>
