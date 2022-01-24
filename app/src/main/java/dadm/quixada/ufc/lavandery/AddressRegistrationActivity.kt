@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.models.Address
@@ -54,18 +53,30 @@ class AddressRegistrationActivity : AppCompatActivity() {
         val db = Firebase.firestore
 
         db.collection("users").document(currentUserId)
-            .update("addresses", FieldValue.arrayUnion(address))
+            .collection("addresses").document(address.id).set(address)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(
-                        this,
-                        "Endereço adicionado com sucesso",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    db.collection("users").document(currentUserId)
+                        .update("current_address_id", address.id)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(
+                                    this,
+                                    "Endereço adicionado com sucesso",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
-                    val homeIntent = Intent(this, HomeActivity::class.java)
-                    startActivity(homeIntent)
-                    finish()
+                                val homeIntent = Intent(this, HomeActivity::class.java)
+                                startActivity(homeIntent)
+                                finish()
+                            }else {
+                                Toast.makeText(
+                                    this,
+                                    "Ocorreu um erro ao atualizar o endereço atual",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
                 } else {
                     Toast.makeText(
                         this,

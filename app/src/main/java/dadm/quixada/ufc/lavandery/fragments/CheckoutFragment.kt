@@ -25,6 +25,7 @@ import dadm.quixada.ufc.lavandery.internalModels.Order
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class CheckoutFragment : Fragment() {
@@ -45,6 +46,10 @@ class CheckoutFragment : Fragment() {
     private var laundryBasket: ArrayList<LaundryBasketItem> = ArrayList()
     private var laundryBasketTotalValue: Float = 0.0f
     private var orderTotalValue: Float = 0.0f
+
+    private lateinit var localTextView: TextView
+    private lateinit var complementTextView: TextView
+    private lateinit var cepTextView: TextView
 
     private lateinit var mAuth: FirebaseAuth
 
@@ -266,6 +271,4 @@ class CheckoutFragment : Fragment() {
         this.basketListView.layoutParams = params
         this.basketListView.requestLayout()
     }
-
-
 }

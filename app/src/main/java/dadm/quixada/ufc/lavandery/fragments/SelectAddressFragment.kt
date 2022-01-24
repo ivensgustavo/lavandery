@@ -2,15 +2,14 @@ package dadm.quixada.ufc.lavandery.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
+
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -19,9 +18,8 @@ import dadm.quixada.ufc.lavandery.AddressRegistrationActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.AddressAdapter
 import dadm.quixada.ufc.lavandery.models.Address
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+
 
 class SelectAddressFragment : BottomSheetDialogFragment() {
 
@@ -36,41 +34,41 @@ class SelectAddressFragment : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.fragment_select_address, container, false)
     }
 
-    private fun getAddressesFromDb(view: View){
+    private fun getAddressesFromDb(view: View) {
         val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
         val userId = mAuth.currentUser!!.uid
         val db = Firebase.firestore
 
-        val docRef = db.collection("users").document(userId)
+        val userRef = db.collection("users").document(userId)
+        val addressRef = db.collection("users").document(userId).collection("addresses")
 
-        docRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    val addresses = document.data!!["addresses"] as ArrayList<HashMap<String, *>>
-                    for(address in addresses){
-                        this.addressList.add(
-                            Address(
-                                address["id"].toString(),
-                                address["street"].toString(),
-                                address["number"].toString().toInt(),
-                                address["cep"].toString().toInt(),
-                                address["complement"].toString()
-                            )
+        addressRef.get()
+            .addOnSuccessListener { documents ->
+                for(document in documents) {
+                    this.addressList.add(
+                        Address(
+                            document.data["id"].toString(),
+                            document.data["street"].toString(),
+                            document.data["number"].toString().toInt(),
+                            document.data["cep"].toString().toInt(),
+                            document.data["complement"].toString()
                         )
-                    }
-
-                    this.currentAddressId = document.data!!["current_address_id"].toString()
-                    initializeViews(view)
+                    )
                 }
+
+                userRef.get().addOnSuccessListener { document ->
+                        this.currentAddressId = document.data!!["current_address_id"].toString()
+                        initializeViews(view)
+                }
+
             }
-            .addOnFailureListener { _ ->
+            .addOnFailureListener {
                 Toast.makeText(
                     context,
                     "Ocorreu um erro ao buscar os seus endereços",
                     Toast.LENGTH_SHORT
                 ).show()
             }
-
 
     }
 
@@ -81,7 +79,7 @@ class SelectAddressFragment : BottomSheetDialogFragment() {
         getAddressesFromDb(view)
     }
 
-    private fun initializeViews(view: View){
+    private fun initializeViews(view: View) {
         val addressListView: ListView = view.findViewById(R.id.my_address_list_view)
         val adapter = AddressAdapter(requireActivity(), this.addressList)
         adapter.setCurrentAddress(this.currentAddressId)
@@ -102,7 +100,7 @@ class SelectAddressFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun updateCurrentAddress(){
+    private fun updateCurrentAddress() {
         val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
         val userId = mAuth.currentUser!!.uid
         val db = Firebase.firestore
@@ -111,7 +109,7 @@ class SelectAddressFragment : BottomSheetDialogFragment() {
 
         docRef.update("current_address_id", this.currentAddressId)
             .addOnCompleteListener { task ->
-                if(!task.isSuccessful){
+                if (!task.isSuccessful) {
                     Toast.makeText(
                         context,
                         "Ocorreu um erro ao atualizar o endereço atual",
