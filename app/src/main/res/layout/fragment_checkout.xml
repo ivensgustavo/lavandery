@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Rua Desembargador Praxedes, 407"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -81,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Apartamento 402, Residencial Guarani"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -99,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="62370000"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -147,7 +147,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
-                                android:text="10/01/2022"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -334,7 +333,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
-                                android:text="10/01/2022"
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
                         </LinearLayout>

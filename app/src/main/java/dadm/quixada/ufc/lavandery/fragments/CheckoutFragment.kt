@@ -1,6 +1,7 @@
 package dadm.quixada.ufc.lavandery.fragments
 
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 
 
@@ -64,6 +65,8 @@ class CheckoutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mAuth = FirebaseAuth.getInstance()
+
         this.laundryBasket = arguments?.get("laundry_basket") as ArrayList<LaundryBasketItem>
         this.laundryBasketTotalValue = arguments?.get("laundry_basket_value") as Float
         this.orderTotalValue = this.laundryBasketTotalValue + 10
@@ -71,8 +74,7 @@ class CheckoutFragment : Fragment() {
         initializeBasketListView(view)
         initializeViews(view)
         configureDateSelectButtons()
-
-        mAuth = FirebaseAuth.getInstance()
+        setAddress()
     }
 
     private fun initializeViews(view: View) {
@@ -86,6 +88,10 @@ class CheckoutFragment : Fragment() {
         this.totalItemsTextView = view.findViewById(R.id.checkout_total_basket_items)
         this.laundryBasketTotalTextView = view.findViewById(R.id.checkout_total_basket_value)
         this.ordertotalTextView = view.findViewById(R.id.checkout_total_order_value)
+
+        this.localTextView = view.findViewById(R.id.checkout_address_local)
+        this.cepTextView = view.findViewById(R.id.checkout_address_cep)
+        this.complementTextView = view.findViewById(R.id.checkout_address_complement)
 
         this.totalItemsTextView.text = this.laundryBasket.size.toString()+ " items"
         this.laundryBasketTotalTextView.text = "R$ " + String.format("%.2f", this.laundryBasketTotalValue)
@@ -185,6 +191,28 @@ class CheckoutFragment : Fragment() {
 
         this.setListViewHeight()
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setAddress(){
+        val db = Firebase.firestore
+        val userId = mAuth.currentUser!!.uid
+
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                val currentAddressId = document.data!!["current_address_id"].toString()
+                db.collection("users").document(userId)
+                    .collection("addresses").document(currentAddressId)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        this.localTextView.text = document.data!!["street"].toString() + ", " +
+                                                    document.data!!["number"].toString()
+
+                        this.cepTextView.text = document.data!!["cep"].toString()
+                        this.complementTextView.text = document.data!!["complement"].toString()
+                    }
+            }
     }
 
     private fun configureDateSelectButtons() {
