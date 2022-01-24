@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.models.Address
+import dadm.quixada.ufc.lavandery.models.ServicePreferences
 import dadm.quixada.ufc.lavandery.models.User
 
 class SelectAccountTypeActivity : AppCompatActivity() {
@@ -50,7 +51,12 @@ class SelectAccountTypeActivity : AppCompatActivity() {
         val telephone = intent.extras!!.get("telephone").toString()
         val email = intent.extras!!.get("email").toString()
         val password = intent.extras!!.get("password").toString()
-        val addressList: ArrayList<Address> = ArrayList()
+
+        val preferences = ServicePreferences(
+            ironed_clothes = false,
+            orders_at_reception = false,
+            scented_clothes = false,
+            t_shirts_on_hanger = false)
 
         accountTypeRadioSelected = findViewById(radioGroupAccountType.checkedRadioButtonId)
         val accountType: String = accountTypeRadioSelected.text.toString()
@@ -61,32 +67,33 @@ class SelectAccountTypeActivity : AppCompatActivity() {
                 val exception = task.exception
                 if (task.isSuccessful) {
                     val currentUserId = mAuth.currentUser!!.uid
-                    val newUser = User(name, surname, telephone, accountType, addressList)
+                    val newUser = User(name, surname, telephone, accountType)
 
                     val db = Firebase.firestore
+                    val userRef = db.collection("users").document(currentUserId)
 
-                    db.collection("users").document(currentUserId)
-                        .set(newUser)
-                        .addOnCompleteListener(this) { task ->
-                            if (task.isSuccessful) {
-                                Toast.makeText(
-                                    this,
-                                    "Sua conta foi criada com sucesso.",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                    db.runBatch { batch ->
+                        batch.set(userRef, newUser)
+                        batch.update(userRef, "preferences", preferences)
+                    }.addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(
+                                this,
+                                "Sua conta foi criada com sucesso.",
+                                Toast.LENGTH_LONG
+                            ).show()
 
-                                val addressIntent =
-                                    Intent(this, AddressRegistrationActivity::class.java)
-                                startActivity(addressIntent)
-                                finish()
-                            } else {
-                                Toast.makeText(
-                                    this,
-                                    "Houve um ero ao criar a conta. Tente novamente",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
+                            val addressIntent = Intent(this, AddressRegistrationActivity::class.java)
+                            startActivity(addressIntent)
+                            finish()
+                        } else {
+                            Toast.makeText(
+                                this,
+                                "Houve um ero ao criar a conta. Tente novamente",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
+                    }
 
                 } else {
                     Toast.makeText(
@@ -97,5 +104,23 @@ class SelectAccountTypeActivity : AppCompatActivity() {
                     Log.w("SelectAccountActivity", exception!!.message.toString())
                 }
             }
+    }
+
+    private fun saveServicesPreferences(){
+        val preferences = ServicePreferences(
+            ironed_clothes = false,
+            orders_at_reception = false,
+            scented_clothes = false,
+            t_shirts_on_hanger = false)
+
+        val db = Firebase.firestore
+        val userId = mAuth.currentUser!!.uid
+
+        db.collection("users").document(userId)
+            .update("preferences", preferences)
+            .addOnSuccessListener {
+
+            }
+
     }
 }
