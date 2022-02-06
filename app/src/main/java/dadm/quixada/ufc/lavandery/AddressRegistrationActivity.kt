@@ -1,6 +1,7 @@
 package dadm.quixada.ufc.lavandery
 
 import android.content.Intent
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -8,6 +9,7 @@ import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import dadm.quixada.ufc.lavandery.logic.AddressService
 import java.util.*
+import kotlin.collections.HashMap
 
 class AddressRegistrationActivity : AppCompatActivity() {
 
@@ -41,11 +43,13 @@ class AddressRegistrationActivity : AppCompatActivity() {
 
         val id = UUID.randomUUID().toString()
         val street = streetEditText.text.toString()
-        val number = numberEditText.text.toString().toInt()
-        val cep = cepEditText.text.toString().toInt()
-        val complement = complementEditText.text.toString()
+        val number = numberEditText.text.toString().trim().toInt()
+        val cep = cepEditText.text.toString().trim().toInt()
+        val complement = complementEditText.text.toString().trim()
+        val geoPoint = getGeoPoint(street, number.toString(), cep.toString())
 
-        addressService.addAddress(id, street, number, cep, complement) { result ->
+        addressService.addAddress(id, street, number, cep, complement,
+            geoPoint["latitude"]!!, geoPoint["longitude"]!!) { result ->
             if (result) {
                 Toast.makeText(
                     this,
@@ -65,6 +69,16 @@ class AddressRegistrationActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun getGeoPoint(street: String, number: String, cep: String): HashMap<String, Double>{
+        val geocoder = Geocoder(this, Locale("pt", "BR"))
+        val results = geocoder.getFromLocationName("$street, $number, $cep", 1)
+
+        val geoPoint = HashMap<String, Double>()
+        geoPoint["latitude"] = results[0].latitude
+        geoPoint["longitude"] = results[0].longitude
+        return geoPoint
     }
 
 

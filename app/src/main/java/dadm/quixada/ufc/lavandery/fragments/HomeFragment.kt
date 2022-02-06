@@ -1,7 +1,9 @@
 package dadm.quixada.ufc.lavandery.fragments
 
 
+import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.logic.UserService
+import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -47,6 +50,13 @@ class HomeFragment : Fragment() {
 
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(saoBenedito, 13.0f))
         }
+
+
+        val geocoder = Geocoder(context, Locale("pt-br"))
+        val list = geocoder.getFromLocationName("Rua Paulo Marques, 617, São Benedito, Ceará, Brazil", 1)
+
+        Log.d("Latitude:", list[0].latitude.toString())
+        Log.d("Longitude: ", list[0].longitude.toString())
 
         return view
     }

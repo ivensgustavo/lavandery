@@ -1,6 +1,5 @@
 package dadm.quixada.ufc.lavandery.logic
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -11,9 +10,18 @@ class AddressService {
     var mAuth = FirebaseAuth.getInstance()
     var db = Firebase.firestore
 
-    fun addAddress(id: String, street: String, number: Int, cep:Int, complement: String, setResult: (result: Boolean) -> Unit){
+    fun addAddress(
+        id: String,
+        street: String,
+        number: Int,
+        cep: Int,
+        complement: String,
+        latitude: Double,
+        longitude: Double,
+        setResult: (result: Boolean) -> Unit
+    ) {
 
-        val address = Address(id, street, number, cep, complement)
+        val address = Address(id, street, number, cep, complement, latitude, longitude)
 
         db.collection("users").document(mAuth.currentUser!!.uid)
             .collection("addresses").document(address.id).set(address)
@@ -24,7 +32,7 @@ class AddressService {
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 setResult(true)
-                            }else {
+                            } else {
                                 setResult(false)
                             }
                         }
@@ -34,21 +42,23 @@ class AddressService {
             }
     }
 
-    fun getAllAddresses(setResult: (result: ArrayList<Address>?) -> Unit){
+    fun getAllAddresses(setResult: (result: ArrayList<Address>?) -> Unit) {
         val userRef = db.collection("users").document(mAuth.currentUser!!.uid)
-        val addressRef =userRef.collection("addresses")
+        val addressRef = userRef.collection("addresses")
         val addressList = ArrayList<Address>()
 
         addressRef.get()
             .addOnSuccessListener { documents ->
-                for(document in documents) {
+                for (document in documents) {
                     addressList.add(
                         Address(
                             document.data["id"].toString(),
                             document.data["street"].toString(),
                             document.data["number"].toString().toInt(),
                             document.data["cep"].toString().toInt(),
-                            document.data["complement"].toString()
+                            document.data["complement"].toString(),
+                            document.data["latitude"].toString().toDouble(),
+                            document.data["longitude"].toString().toDouble()
                         )
                     )
                 }
@@ -60,20 +70,20 @@ class AddressService {
             }
     }
 
-    fun updateCurrentAddress(id: String, setResult: (result: Boolean) -> Unit){
+    fun updateCurrentAddress(id: String, setResult: (result: Boolean) -> Unit) {
         val docRef = db.collection("users").document(mAuth.currentUser!!.uid)
 
         docRef.update("current_address_id", id)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     setResult(true)
-                }else {
+                } else {
                     setResult(false)
                 }
             }
     }
 
-    fun getCurrentAddress(setResult: (result: Address?) -> Unit){
+    fun getCurrentAddress(setResult: (result: Address?) -> Unit) {
 
         val docRef = db.collection("users").document(mAuth.currentUser!!.uid)
 
@@ -88,8 +98,18 @@ class AddressService {
                         val number = addressDocument.data!!["number"].toString().toInt()
                         val cep = addressDocument.data!!["cep"].toString().toInt()
                         val complement = addressDocument.data!!["complement"].toString()
+                        val latitude = addressDocument.data!!["latitude"].toString().toDouble()
+                        val longitude = addressDocument.data!!["longitude"].toString().toDouble()
 
-                        val address = Address(currentAddressId, street, number, cep, complement)
+                        val address = Address(
+                            currentAddressId,
+                            street,
+                            number,
+                            cep,
+                            complement,
+                            latitude,
+                            longitude
+                        )
                         setResult(address)
                     }
                     .addOnFailureListener {
@@ -101,7 +121,7 @@ class AddressService {
             }
     }
 
-    fun getAddress(id: String, consumerId: String, setResult: (result: Address?) -> Unit){
+    fun getAddress(id: String, consumerId: String, setResult: (result: Address?) -> Unit) {
 
         val docRef = db.collection("users").document(consumerId)
 
@@ -115,8 +135,11 @@ class AddressService {
                         val number = addressDocument.data!!["number"].toString().toInt()
                         val cep = addressDocument.data!!["cep"].toString().toInt()
                         val complement = addressDocument.data!!["complement"].toString()
+                        val latitude = addressDocument.data!!["latitude"].toString().toDouble()
+                        val longitude = addressDocument.data!!["longitude"].toString().toDouble()
 
-                        val address = Address(id, street, number, cep, complement)
+                        val address =
+                            Address(id, street, number, cep, complement, latitude, longitude)
                         setResult(address)
                     }
                     .addOnFailureListener {
