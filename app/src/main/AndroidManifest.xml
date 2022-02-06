@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dadm.quixada.ufc.lavandery">
 
-
     <application
+
         android:hardwareAccelerated="true"
         android:largeHeap="true"
         android:allowBackup="true"
@@ -20,18 +20,6 @@
             android:exported="true" />
         <activity
             android:name=".AddressRegistrationActivity"
-            android:exported="true" />
-        <activity
-            android:name=".EditCellPhoneActivity"
-            android:exported="true" />
-        <activity
-            android:name=".EditEmailActivity"
-            android:exported="true" />
-        <activity
-            android:name=".EditName"
-            android:exported="true" />
-        <activity
-            android:name=".AccountSettings"
             android:exported="true" />
         <activity
             android:name=".ConsumerPreferencesActivity"
@@ -54,6 +42,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
     </application>
 
 </manifest>

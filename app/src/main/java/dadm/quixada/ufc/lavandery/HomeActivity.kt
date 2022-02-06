@@ -6,6 +6,11 @@ import android.os.Bundle
 import android.view.View
 
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import dadm.quixada.ufc.lavandery.fragments.HomeFragment
@@ -13,7 +18,7 @@ import dadm.quixada.ufc.lavandery.fragments.MyOrdersFragment
 import dadm.quixada.ufc.lavandery.fragments.SettingsFragment
 
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(){
 
     private val homeFragment: Fragment = HomeFragment()
     private val myRequestFragment: Fragment = MyOrdersFragment()
@@ -25,8 +30,6 @@ class HomeActivity : AppCompatActivity() {
 
         changeCurrentFragment(homeFragment)
         setBottomNavigationActions()
-
-
     }
 
     private fun setBottomNavigationActions() {
@@ -60,4 +63,5 @@ class HomeActivity : AppCompatActivity() {
         val bottomNavigationMenu: BottomNavigationView = findViewById(R.id.bottom_navigation_menu)
         bottomNavigationMenu.visibility = View.VISIBLE
     }
+
 }

@@ -8,6 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
@@ -22,7 +27,28 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_home, container, false)
+
+        val mapFragment = SupportMapFragment.newInstance()
+        childFragmentManager.beginTransaction().apply {
+            replace(R.id.container_map, mapFragment)
+            addToBackStack(null)
+            commit()
+        }
+
+        mapFragment.getMapAsync { googleMap ->
+            val saoBenedito = LatLng(-4.0371272, -40.9086704)
+            googleMap.clear()
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(saoBenedito)
+                    .title("Meu Marcador")
+            )
+
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(saoBenedito, 13.0f))
+        }
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,7 +57,7 @@ class HomeFragment : Fragment() {
         val homeActivity = requireActivity() as HomeActivity
         homeActivity.showBottomNavigation()
 
-        val btnNewOrder: Button = view.findViewById(R.id.btn_new_order)
+        /*val btnNewOrder: Button = view.findViewById(R.id.btn_new_order)
         btnNewOrder.setOnClickListener {
 
             val bundle = Bundle()
@@ -46,7 +72,7 @@ class HomeFragment : Fragment() {
                 addToBackStack(null)
                 commit()
             }
-        }
+        }*/
 
         val btnOpenMyAddressBottomSheet: Button = view.findViewById(R.id.btn_open_my_address_bottom_sheet)
 
