@@ -9,14 +9,14 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 import dadm.quixada.ufc.lavandery.fragments.HomeFragment
-import dadm.quixada.ufc.lavandery.fragments.MyRequestsFragment
+import dadm.quixada.ufc.lavandery.fragments.MyOrdersFragment
 import dadm.quixada.ufc.lavandery.fragments.SettingsFragment
 
 
 class HomeActivity : AppCompatActivity() {
 
     private val homeFragment: Fragment = HomeFragment()
-    private val myRequestFragment: Fragment = MyRequestsFragment()
+    private val myRequestFragment: Fragment = MyOrdersFragment()
     private val settingsFragment: Fragment = SettingsFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.OrderDateAndHourFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/order_details_label_collect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Coleta"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/order_details_label_collection_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_details_label_collect" />
+
+            <TextView
+                android:id="@+id/order_details_collection_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="25 ago 2022"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/order_details_label_collection_date"
+                app:layout_constraintTop_toBottomOf="@id/order_details_label_collect" />
+
+            <TextView
+                android:id="@+id/order_details_collection_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="08:00"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/order_details_label_collection_hour"
+                app:layout_constraintTop_toBottomOf="@+id/order_details_label_collect" />
+
+            <TextView
+                android:id="@+id/order_details_label_collection_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Hora"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/order_details_collection_date"
+                app:layout_constraintTop_toBottomOf="@+id/order_details_label_collect" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/order_details_label_delivery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Entrega"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/order_details_label_delivery_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_details_label_delivery" />
+
+            <TextView
+                android:id="@+id/order_details_delivery_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="25 ago 2022"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/order_details_label_delivery_date"
+                app:layout_constraintTop_toBottomOf="@id/order_details_label_delivery" />
+
+            <TextView
+                android:id="@+id/order_details_delivery_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="08:00"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/order_details_label_delivery_hour"
+                app:layout_constraintTop_toBottomOf="@+id/order_details_label_delivery" />
+
+            <TextView
+                android:id="@+id/order_details_label_delivery_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Hora"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/order_details_delivery_date"
+                app:layout_constraintTop_toBottomOf="@+id/order_details_label_delivery" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</FrameLayout>

@@ -14,6 +14,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import dadm.quixada.ufc.lavandery.logic.AuthService
+import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,6 +30,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var enterButton: Button
     private lateinit var signInWithGoogleButton: Button
     private lateinit var signUpLink: TextView
+    private val authService = AuthService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,23 +82,22 @@ class LoginActivity : AppCompatActivity() {
         val isValid = validateLoginData()
 
         if (isValid) {
-            val email = emailEditText.text.toString()
-            val password = passwordEditText.text.toString()
+            val email = emailEditText.text.toString().trim()
+            val password = passwordEditText.text.toString().trim()
 
-            mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val homeIntent = Intent(this, HomeActivity::class.java)
-                        startActivity(homeIntent)
-                        finish()
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Ocorreu um erro ao realizar login no app. Tente novamente",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+            authService.signInWithEmailAndPassword(email, password){ result ->
+                if(result){
+                    val homeIntent = Intent(this, HomeActivity::class.java)
+                    startActivity(homeIntent)
+                    finish()
+                }else{
+                    Toast.makeText(
+                        this,
+                        "Ocorreu um erro ao realizar login. Tente novamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+            }
         } else {
             Toast.makeText(
                 this,
@@ -139,7 +141,13 @@ class LoginActivity : AppCompatActivity() {
                     // O login com o google ocorreu com sucesso
                     val account = task.getResult(ApiException::class.java)!!
                     Log.d("LoginActivity", "firebaseAuthWithGoogle:" + account.id)
-                    firebaseAuthWithGoogle(account.idToken!!)
+                    authService.firebaseAuthWithGoogle(account.idToken!!){ result ->
+                        if(result){
+                            val homeIntent = Intent(this, HomeActivity::class.java)
+                            startActivity(homeIntent)
+                            finish()
+                        }
+                    }
                 } catch (e: ApiException) {
                     // Ocorreu falha ao executar o login
                     Log.w("LoginActivity", "Google sign in failed", e)
@@ -149,21 +157,5 @@ class LoginActivity : AppCompatActivity() {
             }
 
         }
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Quando o login ocorre com sucesso atualize o app com as informações do usuário
-                    val homeIntent = Intent(this, HomeActivity::class.java)
-                    startActivity(homeIntent)
-                    finish()
-                } else {
-                    // Quando ocorrer uma falah mostrar uma mensagem ao usuário
-                    Log.w("LoginActivty", "signInWithCredential:failure", task.exception)
-                }
-            }
     }
 }

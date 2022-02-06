@@ -1,12 +1,15 @@
 package dadm.quixada.ufc.lavandery.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import dadm.quixada.ufc.lavandery.R
+import dadm.quixada.ufc.lavandery.logic.AddressService
 import dadm.quixada.ufc.lavandery.models.Address
 
 
@@ -15,8 +18,10 @@ class OrderAddressFragment : Fragment() {
     private lateinit var localTextView: TextView
     private lateinit var complementTextView: TextView
     private lateinit var cepTextView: TextView
+    private val addressService = AddressService()
 
-    private lateinit var address: Address
+    private var addressId = "-"
+    private var consumerId = "-"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,15 +43,31 @@ class OrderAddressFragment : Fragment() {
         cepTextView = view.findViewById(R.id.order_details_address_cep)
     }
 
-    fun setAddress(address: Address) {
-        this.address = address
-        this.updateScreenWithAddressData()
+    fun setData(addressId: String, consumerId: String) {
+        this.addressId = addressId
+        this.consumerId = consumerId
+        this.getAddressFromDB()
     }
 
-    private fun updateScreenWithAddressData() {
+    private fun updateScreenWithAddressData(address: Address) {
         localTextView.text = address.street+","+address.number.toString()
         complementTextView.text = address.complement
         cepTextView.text = address.cep.toString()
+    }
+
+    private fun getAddressFromDB(){
+        addressService.getAddress(this.addressId, this.consumerId){ result ->
+            if(result != null){
+                updateScreenWithAddressData(result)
+            }else{
+                Toast.makeText(
+                    requireActivity(),
+                    "Erro ao buscar endereço do pedido",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+        }
     }
 
 }

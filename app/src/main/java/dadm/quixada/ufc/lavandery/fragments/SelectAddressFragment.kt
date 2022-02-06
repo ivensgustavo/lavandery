@@ -11,12 +11,10 @@ import android.widget.ListView
 import android.widget.Toast
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.AddressRegistrationActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.AddressAdapter
+import dadm.quixada.ufc.lavandery.logic.AddressService
 import dadm.quixada.ufc.lavandery.models.Address
 import kotlin.collections.ArrayList
 
@@ -25,6 +23,7 @@ class SelectAddressFragment : BottomSheetDialogFragment() {
 
     private var addressList: ArrayList<Address> = ArrayList()
     private var currentAddressId: String = ""
+    private val addressService = AddressService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,40 +34,25 @@ class SelectAddressFragment : BottomSheetDialogFragment() {
     }
 
     private fun getAddressesFromDb(view: View) {
-        val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-        val userId = mAuth.currentUser!!.uid
-        val db = Firebase.firestore
 
-        val userRef = db.collection("users").document(userId)
-        val addressRef = db.collection("users").document(userId).collection("addresses")
-
-        addressRef.get()
-            .addOnSuccessListener { documents ->
-                for(document in documents) {
-                    this.addressList.add(
-                        Address(
-                            document.data["id"].toString(),
-                            document.data["street"].toString(),
-                            document.data["number"].toString().toInt(),
-                            document.data["cep"].toString().toInt(),
-                            document.data["complement"].toString()
-                        )
-                    )
+        addressService.getAllAddresses { result ->
+            if(result != null){
+                this.addressList = result
+                addressService.getCurrentAddress { currentAddress ->
+                    if(currentAddress != null){
+                        this.currentAddressId = currentAddress.id
+                        this.initializeViews(view)
+                    }
                 }
-
-                userRef.get().addOnSuccessListener { document ->
-                        this.currentAddressId = document.data!!["current_address_id"].toString()
-                        initializeViews(view)
-                }
-
-            }
-            .addOnFailureListener {
+                this.initializeViews(view)
+            }else{
                 Toast.makeText(
-                    context,
-                    "Ocorreu um erro ao buscar os seus endereços",
+                    requireActivity(),
+                    "Ocorreu um erro ao buscar os endereços.",
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        }
 
     }
 
@@ -101,21 +85,15 @@ class SelectAddressFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateCurrentAddress() {
-        val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-        val userId = mAuth.currentUser!!.uid
-        val db = Firebase.firestore
 
-        val docRef = db.collection("users").document(userId)
-
-        docRef.update("current_address_id", this.currentAddressId)
-            .addOnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Toast.makeText(
-                        context,
-                        "Ocorreu um erro ao atualizar o endereço atual",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        addressService.updateCurrentAddress(this.currentAddressId){ result ->
+            if(!result){
+                Toast.makeText(
+                    context,
+                    "Ocorreu um erro ao atualizar o endereço atual.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+        }
     }
 }

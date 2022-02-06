@@ -1,20 +1,20 @@
 package dadm.quixada.ufc.lavandery.fragments
 
-import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
-import dadm.quixada.ufc.lavandery.internalModels.Order
+import dadm.quixada.ufc.lavandery.models.Order
 import dadm.quixada.ufc.lavandery.models.Address
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class OrderDetails : Fragment() {
+class OrderDetailsFragment : Fragment() {
 
     private lateinit var order: Order
 
@@ -29,19 +29,14 @@ class OrderDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        order = Order(
-            "SGG47HGDG6",
-            "GH7N78DH4G",
-            30,
-            70.0.toFloat(),
-            Date(2021, 12, 8),
-            Date(2021, 12, 9),
-            Date(2021, 12, 10),
-            "Agendado")
-
         this.changeStatus()
         this.changeBasket()
         this.changeAddress()
+        this.changeCollectAndDelivery()
+    }
+
+    fun setOrder(order: Order){
+        this.order = order
     }
 
     private fun changeStatus(){
@@ -52,7 +47,7 @@ class OrderDetails : Fragment() {
     }
 
     private fun changeBasket(){
-        val orderbasketFragment =
+        val orderBasketFragment =
             childFragmentManager.findFragmentById(R.id.order_basket_fragment) as OrderBasketFragment
 
         val laundryBasket: ArrayList<LaundryBasketItem> = ArrayList()
@@ -65,22 +60,28 @@ class OrderDetails : Fragment() {
         laundryBasket.add(LaundryBasketItem("Saia", 3, 4.0.toFloat()))
         laundryBasket.add(LaundryBasketItem("Casaco", 7, 3.0.toFloat()))
 
-        orderbasketFragment.setOrderBasket(laundryBasket)
-        orderbasketFragment.setOrderTotal(170.0f)
+        orderBasketFragment.setOrderDeliveryValue(15.0f)
+        orderBasketFragment.setOrderBasket(order.laundryBasket)
     }
 
     private fun changeAddress(){
         val orderAddressFragment =
             childFragmentManager.findFragmentById(R.id.order_address_fragment) as OrderAddressFragment
-
-        orderAddressFragment.setAddress(Address(
-            "Rua Ministro Antonio Coelho",
-            619,
-            623700,
-            "Em frente a Escola do Dep. Júlio Filizola"
-        ))
+        orderAddressFragment.setData(order.addressId, order.consumerId)
     }
 
+
+    private fun changeCollectAndDelivery(){
+        val orderDateAndHourFragment =
+            childFragmentManager.findFragmentById(R.id.order_date_and_hour_fragment) as OrderDateAndHourFragment
+
+        orderDateAndHourFragment.setData(
+            order.collectionDate,
+            order.collectionTime,
+            order.deliveryDate,
+            order.deliveryTime
+        )
+    }
 
 
 

@@ -1,7 +1,6 @@
 package dadm.quixada.ufc.lavandery.fragments
 
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 
 
@@ -17,16 +16,13 @@ import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
 import android.view.View.MeasureSpec
 import android.widget.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.HomeActivity
-import dadm.quixada.ufc.lavandery.internalModels.Order
+import dadm.quixada.ufc.lavandery.logic.AddressService
+import dadm.quixada.ufc.lavandery.logic.OrderService
+import dadm.quixada.ufc.lavandery.models.Address
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class CheckoutFragment : Fragment() {
@@ -41,18 +37,20 @@ class CheckoutFragment : Fragment() {
     private lateinit var btnConfirmAndSchedule: Button
     private lateinit var totalItemsTextView: TextView
     private lateinit var laundryBasketTotalTextView: TextView
-    private lateinit var ordertotalTextView: TextView
+    private lateinit var orderTotalTextView: TextView
     private var collectionDate: Date = Date()
     private var deliveryDate: Date = Date()
     private var laundryBasket: ArrayList<LaundryBasketItem> = ArrayList()
     private var laundryBasketTotalValue: Float = 0.0f
     private var orderTotalValue: Float = 0.0f
+    private lateinit var currentAddress: Address
 
     private lateinit var localTextView: TextView
     private lateinit var complementTextView: TextView
     private lateinit var cepTextView: TextView
 
-    private lateinit var mAuth: FirebaseAuth
+    private val orderService = OrderService()
+    private val addressService = AddressService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,16 +63,14 @@ class CheckoutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mAuth = FirebaseAuth.getInstance()
-
         this.laundryBasket = arguments?.get("laundry_basket") as ArrayList<LaundryBasketItem>
         this.laundryBasketTotalValue = arguments?.get("laundry_basket_value") as Float
         this.orderTotalValue = this.laundryBasketTotalValue + 10
 
         initializeBasketListView(view)
         initializeViews(view)
+        initializeAddress()
         configureDateSelectButtons()
-        setAddress()
     }
 
     private fun initializeViews(view: View) {
@@ -87,7 +83,7 @@ class CheckoutFragment : Fragment() {
         this.btnConfirmAndSchedule = view.findViewById(R.id.btn_confirm_and_schedule)
         this.totalItemsTextView = view.findViewById(R.id.checkout_total_basket_items)
         this.laundryBasketTotalTextView = view.findViewById(R.id.checkout_total_basket_value)
-        this.ordertotalTextView = view.findViewById(R.id.checkout_total_order_value)
+        this.orderTotalTextView = view.findViewById(R.id.checkout_total_order_value)
 
         this.localTextView = view.findViewById(R.id.checkout_address_local)
         this.cepTextView = view.findViewById(R.id.checkout_address_cep)
@@ -95,13 +91,12 @@ class CheckoutFragment : Fragment() {
 
         this.totalItemsTextView.text = this.laundryBasket.size.toString()+ " items"
         this.laundryBasketTotalTextView.text = "R$ " + String.format("%.2f", this.laundryBasketTotalValue)
-        this.ordertotalTextView.text = "R$ " + String.format("%.2f", this.orderTotalValue)
+        this.orderTotalTextView.text = "R$ " + String.format("%.2f", this.orderTotalValue)
 
         this.btnConfirmAndSchedule.setOnClickListener {
             sendOrder(view)
         }
     }
-
 
     private fun getCollectionTimeSelected(view: View): String {
         return view.findViewById<RadioButton>(this.collectionTimeRadioGroup.checkedRadioButtonId)
@@ -114,37 +109,13 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun sendOrder(view: View) {
-        val order = createOrder(view)
-
-        val db = Firebase.firestore
-
-        db.collection("orders")
-            .add(order)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    showConfirmationMessage()
-                } else {
-                    Snackbar.make(
-                        requireContext(),
-                        view,
-                        "Ocorreu um erro ao enviar seu pedido. Tente novamente",
-                        Snackbar.LENGTH_SHORT
-                    )
-                }
-            }
-
-
-    }
-
-    private fun createOrder(view: View): Order {
-        val consumerId = mAuth.currentUser!!.uid
         val providerId = arguments?.get("laundry_provider_id") as String
         val totalItems = this.laundryBasket.size
         val collectionTimeSelected = getCollectionTimeSelected(view)
         val deliveryTimeSelected = getDeliveryTimeSelected(view)
 
-        return Order(
-            consumerId,
+
+        orderService.createOrder(
             providerId,
             totalItems,
             this.laundryBasket,
@@ -154,8 +125,18 @@ class CheckoutFragment : Fragment() {
             this.deliveryDate,
             "Enviado",
             collectionTimeSelected,
-            deliveryTimeSelected
-        )
+            deliveryTimeSelected,
+            this.currentAddress.id
+        ){
+            result ->
+            if(result){
+                showConfirmationMessage()
+            }else{
+               showErrorMessage()
+            }
+        }
+
+
     }
 
     private fun showConfirmationMessage() {
@@ -165,10 +146,18 @@ class CheckoutFragment : Fragment() {
                 "Seu pedido foi enviado para a pessoa que você escolheu para lavar suas roupas. " +
                         "Fique atento a resposta a seu pedido"
             )
-            .setPositiveButton("Ok") { dialog, which ->
+            .setPositiveButton("Ok") { _, _ ->
                 navigateToHome()
             }
             .show()
+    }
+
+    private fun showErrorMessage(){
+        Toast.makeText(
+            requireContext(),
+            "Ocorreu um erro ao enviar seu pedido. Tente novamente",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun navigateToHome() {
@@ -190,36 +179,24 @@ class CheckoutFragment : Fragment() {
         this.basketListView.adapter = adapter
 
         this.setListViewHeight()
-
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun setAddress(){
-        val db = Firebase.firestore
-        val userId = mAuth.currentUser!!.uid
-
-        db.collection("users").document(userId)
-            .get()
-            .addOnSuccessListener { document ->
-                val currentAddressId = document.data!!["current_address_id"].toString()
-                db.collection("users").document(userId)
-                    .collection("addresses").document(currentAddressId)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        this.localTextView.text = document.data!!["street"].toString() + ", " +
-                                                    document.data!!["number"].toString()
-
-                        this.cepTextView.text = document.data!!["cep"].toString()
-                        this.complementTextView.text = document.data!!["complement"].toString()
-                    }
+    private fun initializeAddress(){
+        addressService.getCurrentAddress { result ->
+            if(result != null){
+                this.localTextView.text = result.street +", " + result.number.toString()
+                this.cepTextView.text = result.cep.toString()
+                this.complementTextView.text = result.complement
+                this.currentAddress = result
             }
+        }
     }
 
     private fun configureDateSelectButtons() {
         val myCalendar: Calendar = Calendar.getInstance()
 
         val datePickerCollectionDate =
-            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONDAY, month)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -228,7 +205,7 @@ class CheckoutFragment : Fragment() {
             }
 
         val datePickerDeliveryDate =
-            DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 myCalendar.set(Calendar.YEAR, year)
                 myCalendar.set(Calendar.MONDAY, month)
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)

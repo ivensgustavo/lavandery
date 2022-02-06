@@ -2,22 +2,20 @@ package dadm.quixada.ufc.lavandery.fragments
 
 
 import android.os.Bundle
-import android.text.TextUtils.replace
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
+import dadm.quixada.ufc.lavandery.logic.UserService
 
 class HomeFragment : Fragment() {
+
+    private val userService = UserService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,15 +60,11 @@ class HomeFragment : Fragment() {
 
         val mAuth = FirebaseAuth.getInstance()
         val userId = mAuth.currentUser!!.uid
-        val db = Firebase.firestore
 
-        db.collection("users").document(userId)
-            .get()
-            .addOnSuccessListener { document ->
-                if(document != null){
-                    val name = document.data!!["name"].toString()
-                    helloTextView.text = "Olá, $name"
-                }
+        userService.getUser(userId){ result ->
+            if(result != null) {
+                helloTextView.text = "Olá, ${result.name}"
             }
+        }
     }
 }

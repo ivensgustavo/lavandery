@@ -15,31 +15,24 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import dadm.quixada.ufc.lavandery.LoginActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.AccountSettingAdapter
 import dadm.quixada.ufc.lavandery.internalModels.AccountSetting
+import dadm.quixada.ufc.lavandery.logic.UserService
+import dadm.quixada.ufc.lavandery.models.User
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class AccountSettingsFragment : Fragment() {
 
-    private lateinit var accountSettingsList: ArrayList<AccountSetting>
     private lateinit var exitButton: TextView
-    private lateinit var mAuth: FirebaseAuth
-    private var userName: String = ""
-    private var userSurname: String = ""
-    private var userEmail: String = ""
-    private var userCellPhone: String = ""
-    private var profileImageUrl: String = ""
+    private val mAuth = FirebaseAuth.getInstance()
     private lateinit var profileImageView: ImageView
     private lateinit var btnChangeImageProfile: Button
-    private lateinit var selectedImageUri: Uri
-
+    private lateinit var user: User
+    private val userService = UserService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +41,6 @@ class AccountSettingsFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_account_settings, container, false)
 
-        mAuth = FirebaseAuth.getInstance()
         getAccountDataFromDB(view)
 
         return view
@@ -56,74 +48,62 @@ class AccountSettingsFragment : Fragment() {
 
     private fun getAccountDataFromDB(view: View) {
         val currentUserId = mAuth.currentUser!!.uid
-        val db = Firebase.firestore
 
-        val documentRef = db.collection("users").document(currentUserId)
-        documentRef.get()
-            .addOnSuccessListener { document ->
-                if (document != null) {
-                    this.userName = document.data!!["name"].toString()
-                    this.userSurname = document.data!!["surname"].toString()
-                    this.userCellPhone = document.data!!["telephone"].toString()
-                    this.userEmail = mAuth.currentUser!!.email.toString()
-                    this.profileImageUrl = document.data!!["profile_img_url"].toString()
-                    this.initializeViews(view)
-                }
+        userService.getUser(currentUserId){ recoveredUser ->
+            if(recoveredUser != null){
+                this.user = recoveredUser
+                this.initializeViews(view)
+            }else{
+                showErrorWhenFetchingUserData()
             }
-            .addOnFailureListener { _ ->
-                Toast.makeText(
-                    context,
-                    "Erro ao buscar as configurações da conta",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        }
+    }
+
+    private fun showErrorWhenFetchingUserData(){
+        Toast.makeText(
+            context,
+            "Ocorreu um erro ao buscar as configurações da conta.",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun initializeViews(view: View) {
+
+        this.initializeAccountSettingsList(view)
+
+        this.exitButton = view.findViewById(R.id.btn_sign_out_app)
+        this.exitButton.setOnClickListener { exitTheApp() }
+
+        this.profileImageView = view.findViewById(R.id.profile_image_view)
+
+        this.btnChangeImageProfile = view.findViewById(R.id.button_change_image_profile)
+        this.btnChangeImageProfile.setOnClickListener { selectImageProfile() }
+
+        this.initializeProfileImage()
+
+    }
+
+    private fun initializeAccountSettingsList(view: View){
         val accountSettingsListView: ListView = view.findViewById(R.id.account_settings_list_view)
-        accountSettingsList = this.populateAccountSettingsList()
+
+        val accountSettingsList: ArrayList<AccountSetting> = ArrayList()
+
+        accountSettingsList.add(AccountSetting("Nome", this.user.name, this.user.surname))
+        accountSettingsList.add(AccountSetting("Email", this.user.email))
+        accountSettingsList.add(AccountSetting("Celular", this.user.telephone))
+
         accountSettingsListView.adapter = AccountSettingAdapter(requireActivity(), accountSettingsList)
-
-        exitButton = view.findViewById(R.id.btn_sign_out_app)
-        exitButton.setOnClickListener { exitTheApp() }
-
-
-        profileImageView = view.findViewById(R.id.profile_image_view)
-        btnChangeImageProfile = view.findViewById(R.id.button_change_image_profile)
-        btnChangeImageProfile.setOnClickListener { selectImageProfile() }
-
-        Glide.with(requireContext())
-            .load(profileImageUrl)
-            .into(profileImageView)
-
     }
 
-    private fun exitTheApp(){
-        mAuth.signOut()
+    private fun initializeProfileImage(){
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-
-        googleSignInClient.signOut()
-
-        val loginIntent = Intent(context, LoginActivity::class.java)
-        startActivity(loginIntent)
-
-        requireActivity().finish()
-    }
-
-    private fun populateAccountSettingsList(): ArrayList<AccountSetting> {
-        val list: ArrayList<AccountSetting> = ArrayList()
-
-        list.add(AccountSetting("Nome", this.userName, this.userSurname))
-        list.add(AccountSetting("Email", this.userEmail))
-        list.add(AccountSetting("Celular", this.userCellPhone))
-
-        return list
+        if(this.user.profileImageUrl.equals("-")){
+            this.profileImageView.setImageResource(R.drawable.icon_user)
+        }else {
+            Glide.with(requireContext())
+                .load(this.user.profileImageUrl)
+                .into(this.profileImageView)
+        }
     }
 
     private fun selectImageProfile(){
@@ -141,54 +121,42 @@ class AccountSettingsFragment : Fragment() {
 
     private fun updateProfileImage(data: Intent?){
         val imageUri = data?.data
-        selectedImageUri = imageUri!!
+        val selectedImageUri = imageUri!!
         val bitmap = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, imageUri)
         profileImageView.setImageDrawable(BitmapDrawable(bitmap))
-        uploadProfileToStorage()
+        saveProfileImageInDB(selectedImageUri)
     }
 
-    private fun uploadProfileToStorage(){
+    private fun saveProfileImageInDB(selectedImageUri: Uri){
         val userId = mAuth.currentUser!!.uid
-        val filename = userId+"_profile_img"
-        var storageRef = FirebaseStorage.getInstance().getReference("/images/" + filename)
-        storageRef.putFile(selectedImageUri)
-            .addOnSuccessListener {
-                storageRef.downloadUrl.addOnSuccessListener { uri ->
-                    saveProfileImageUrlInDB(uri.toString())
-                }
-
-            }
-            .addOnFailureListener {
+        userService.saveProfileImage(userId, selectedImageUri){ result ->
+            if(!result){
                 Toast.makeText(
                     context,
-                    "Erro ao salvar imagem no Storage",
+                    "Ocorreu um erro ao atualizar a imagem do perfil.",
                     Toast.LENGTH_SHORT
                 ).show()
             }
+        }
     }
 
-    private fun saveProfileImageUrlInDB(url: String){
-        val db = Firebase.firestore
-        val userID = FirebaseAuth.getInstance().currentUser!!.uid
+    private fun exitTheApp(){
+        Log.d("acount", "Chegou no deslograr")
+        mAuth.signOut()
 
-        db.collection("users").document(userID)
-            .update("profile_img_url", url)
-            .addOnCompleteListener { task ->
-                if(task.isSuccessful){
-                    Toast.makeText(
-                        context,
-                        "Imagem salva com sucesso",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                else {
-                    Toast.makeText(
-                        context,
-                        "Erro ao salvar referencia da imagem",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
 
+        val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
+        googleSignInClient.signOut()
+
+        val loginIntent = Intent(context, LoginActivity::class.java)
+        startActivity(loginIntent)
+
+        requireActivity().finish()
     }
+
 }
