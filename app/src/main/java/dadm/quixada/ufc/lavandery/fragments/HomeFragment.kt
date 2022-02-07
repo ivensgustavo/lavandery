@@ -18,12 +18,18 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
+import dadm.quixada.ufc.lavandery.adapters.MarkerInfoWindowAdapter
+import dadm.quixada.ufc.lavandery.logic.ProviderService
 import dadm.quixada.ufc.lavandery.logic.UserService
+import dadm.quixada.ufc.lavandery.models.User
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class HomeFragment : Fragment() {
 
     private val userService = UserService()
+    private val providerService = ProviderService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,26 +46,45 @@ class HomeFragment : Fragment() {
         }
 
         mapFragment.getMapAsync { googleMap ->
+
+            googleMap.setInfoWindowAdapter(MarkerInfoWindowAdapter(requireActivity()))
+
+            var user = User(
+                "89EYTRqKeHhzRpZKT2bXlSucDcB3",
+                "Gustavo Ivens",
+                "Oliveira Silva",
+                "gustavo_ivens@gmail.com",
+                "88 99243-6247",
+                "Provedor de serviço",
+                HashMap<String, Boolean>(),
+                ""
+            )
+
+            userService.getUser("89EYTRqKeHhzRpZKT2bXlSucDcB3") { result ->
+                if (result != null) {
+                    user = result
+                }
+            }
+
             val saoBenedito = LatLng(-4.0371272, -40.9086704)
             googleMap.clear()
-            googleMap.addMarker(
+            val marker = googleMap.addMarker(
                 MarkerOptions()
                     .position(saoBenedito)
                     .title("Meu Marcador")
             )
 
+            if (marker != null) {
+                marker.tag = user
+            }
+
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(saoBenedito, 13.0f))
         }
 
-
-        val geocoder = Geocoder(context, Locale("pt-br"))
-        val list = geocoder.getFromLocationName("Rua Paulo Marques, 617, São Benedito, Ceará, Brazil", 1)
-
-        Log.d("Latitude:", list[0].latitude.toString())
-        Log.d("Longitude: ", list[0].longitude.toString())
-
         return view
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,7 +109,8 @@ class HomeFragment : Fragment() {
             }
         }*/
 
-        val btnOpenMyAddressBottomSheet: Button = view.findViewById(R.id.btn_open_my_address_bottom_sheet)
+        val btnOpenMyAddressBottomSheet: Button =
+            view.findViewById(R.id.btn_open_my_address_bottom_sheet)
 
         btnOpenMyAddressBottomSheet.setOnClickListener {
             val dialog = SelectAddressFragment()
@@ -97,8 +123,8 @@ class HomeFragment : Fragment() {
         val mAuth = FirebaseAuth.getInstance()
         val userId = mAuth.currentUser!!.uid
 
-        userService.getUser(userId){ result ->
-            if(result != null) {
+        userService.getUser(userId) { result ->
+            if (result != null) {
                 helloTextView.text = "Olá, ${result.name}"
             }
         }

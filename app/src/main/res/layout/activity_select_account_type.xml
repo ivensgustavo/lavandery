@@ -39,7 +39,7 @@
             android:id="@+id/radio_button_consumer_account"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Consumidor de servios de lavanderia"
+            android:text="Consumidor de serviços de lavanderia"
             app:buttonTint="@color/main_blue"/>
         <RadioButton
             android:id="@+id/radio_button_provider_account"
