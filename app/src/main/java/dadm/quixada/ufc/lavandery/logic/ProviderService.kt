@@ -1,56 +1,99 @@
 package dadm.quixada.ufc.lavandery.logic
 
+import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import dadm.quixada.ufc.lavandery.models.User
+import dadm.quixada.ufc.lavandery.models.Address
+import dadm.quixada.ufc.lavandery.models.Provider
 import java.util.*
 import kotlin.collections.ArrayList
+
 import kotlin.collections.HashMap
 
 class ProviderService {
 
     private val db = Firebase.firestore
 
+    fun createProvider(
+    id: String,
+    name: String,
+    surname: String,
+    email: String,
+    telephone: String,
+    accountType: String,
+    setResult: (result: Boolean) -> Unit
+    )
+    {
+        val preferences = HashMap<String, Boolean>()
+        preferences["ironed_clothes"] = false
+        preferences["orders_at_reception"] = false
+        preferences["scented_clothes"] = false
+        preferences["t_shirts_on_hanger"] = false
 
-    fun getAllProviders(setResult: (result: ArrayList<User>?) -> Unit){
-        val providers = ArrayList<User>()
+        val profileImg = "-"
 
-        db.collection("users")
-            .whereEqualTo("accountType", "Provedor de serviços de lavanderia")
+        val provider = Provider(id, name, surname, email, telephone, accountType, profileImg)
+
+        db.collection("users").document(id)
+            .set(provider)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    setResult(true)
+                } else {
+                    setResult(false)
+                }
+            }
+    }
+
+
+    fun getAllProviders(setResult: (result: ArrayList<Provider>?) -> Unit) {
+        db.collection("users").whereEqualTo("accountType", "Prestador de serviços de lavanderia")
             .get()
             .addOnSuccessListener { documents ->
-                for (document in documents){
+
+                val providers = ArrayList<Provider>()
+
+                for(document in documents){
                     val id = document.data["id"].toString()
                     val name = document.data["name"].toString()
                     val surname = document.data["surname"].toString()
                     val telephone = document.data["telephone"].toString()
                     val email = document.data["email"].toString()
                     val accountType = document.data["accountType"].toString()
-                    val preferences = document.data["preferences"] as HashMap<String, Boolean>
                     val profileImageUrl = document.data["profileImageUrl"].toString()
+                    val addressData = document.data["address"] as HashMap<String, Objects>
 
-                    val user = User(
+                    val address = Address(
+                        addressData["id"].toString(),
+                        addressData["street"].toString(),
+                        addressData["number"].toString().toInt(),
+                        addressData["cep"].toString().toInt(),
+                        addressData["complement"].toString(),
+                        addressData["latitude"].toString().toDouble(),
+                        addressData["longitude"].toString().toDouble()
+                    )
+
+                    val provider = Provider(
                         id,
                         name,
                         surname,
                         email,
                         telephone,
                         accountType,
-                        preferences,
-                        profileImageUrl
+                        profileImageUrl,
+                        address
                     )
 
-                    providers.add(user)
+                    providers.add(provider)
                 }
 
                 setResult(providers)
+
             }
             .addOnFailureListener {
                 setResult(null)
             }
     }
-
-
 
 
 }

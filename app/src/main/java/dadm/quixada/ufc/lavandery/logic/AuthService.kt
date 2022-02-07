@@ -28,7 +28,7 @@ class AuthService {
         preferences["scented_clothes"] = false
         preferences["t_shirts_on_hanger"] = false
 
-        val user = User(id, name, surname, email, telephone, accountType, preferences, "-")
+        val user = User(id, name, surname, email, telephone, accountType, "-")
 
         db.collection("users").document(id)
             .set(user)

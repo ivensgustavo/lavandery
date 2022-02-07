@@ -35,11 +35,12 @@
             android:textSize="16sp"/>
     </LinearLayout>
 
-    <Button
+    <TextView
         android:id="@+id/btn_new_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_gravity="center_horizontal"
-        android:text="Novo pedido"
-        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        android:text="Toque para iniciar um novo pedido"
+        android:textColor="@color/main_blue" />
 </LinearLayout>

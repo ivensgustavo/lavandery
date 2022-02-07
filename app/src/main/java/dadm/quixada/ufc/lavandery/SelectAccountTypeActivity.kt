@@ -3,13 +3,15 @@ package dadm.quixada.ufc.lavandery
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import dadm.quixada.ufc.lavandery.logic.AuthService
+import dadm.quixada.ufc.lavandery.logic.ConsumerService
+import dadm.quixada.ufc.lavandery.logic.ProviderService
 
 
 class SelectAccountTypeActivity : AppCompatActivity() {
@@ -17,7 +19,8 @@ class SelectAccountTypeActivity : AppCompatActivity() {
     private val mAuth = FirebaseAuth.getInstance()
     private lateinit var createAccountButton: Button
     private lateinit var radioGroupAccountType: RadioGroup
-    private val authService = AuthService()
+    private val consumerService = ConsumerService()
+    private val providerService = ProviderService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,22 +54,32 @@ class SelectAccountTypeActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val id = mAuth.currentUser!!.uid
-                    authService.createUser(id, name, surname, email, telephone, accountType) { result ->
-                        if (result) {
-                            val addressIntent =
-                                Intent(this, AddressRegistrationActivity::class.java)
-                            startActivity(addressIntent)
-                            finish()
 
-                        } else {
-                            showErrorMessage()
+                    if(accountType == "Consumidor de serviços de lavanderia"){
+                        consumerService.createConsumer(id, name, surname, email, telephone, accountType){  result ->
+                            if(result) openAddressScreen("Consumidor")
+                            else showErrorMessage()
+                        }
+                    }else{
+                        providerService.createProvider(id, name, surname, email, telephone, accountType){ result ->
+                            if(result) {
+                                Log.d("Select Activy","Chegou aqui")
+                                openAddressScreen("Provedor")
+                            }
+                            else showErrorMessage()
                         }
                     }
-
                 } else {
                     showErrorMessage()
                 }
             }
+    }
+
+    private fun openAddressScreen(accountType: String){
+        val addressIntent = Intent(this, AddressRegistrationActivity::class.java)
+        addressIntent.putExtra("accountType", accountType)
+        startActivity(addressIntent)
+        finish()
     }
 
     private fun showErrorMessage() {

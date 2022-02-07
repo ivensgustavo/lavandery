@@ -1,35 +1,44 @@
 package dadm.quixada.ufc.lavandery.fragments
 
 
-import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
+
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.MarkerInfoWindowAdapter
+import dadm.quixada.ufc.lavandery.helpers.BitmapHelper
+import dadm.quixada.ufc.lavandery.logic.AddressService
 import dadm.quixada.ufc.lavandery.logic.ProviderService
 import dadm.quixada.ufc.lavandery.logic.UserService
-import dadm.quixada.ufc.lavandery.models.User
-import java.util.*
+
+import dadm.quixada.ufc.lavandery.models.Provider
+
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+
 
 class HomeFragment : Fragment() {
 
     private val userService = UserService()
     private val providerService = ProviderService()
+    private val addressService = AddressService()
+    private val laundryIcon: BitmapDescriptor by lazy {
+        val color = ContextCompat.getColor(requireContext(), R.color.main_blue)
+        BitmapHelper.vectorToBitmap(requireContext(), R.drawable.ic_local_laundry, color)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,44 +55,74 @@ class HomeFragment : Fragment() {
         }
 
         mapFragment.getMapAsync { googleMap ->
-
             googleMap.setInfoWindowAdapter(MarkerInfoWindowAdapter(requireActivity()))
 
-            var user = User(
-                "89EYTRqKeHhzRpZKT2bXlSucDcB3",
-                "Gustavo Ivens",
-                "Oliveira Silva",
-                "gustavo_ivens@gmail.com",
-                "88 99243-6247",
-                "Provedor de serviço",
-                HashMap<String, Boolean>(),
-                ""
-            )
-
-            userService.getUser("89EYTRqKeHhzRpZKT2bXlSucDcB3") { result ->
+            providerService.getAllProviders { result ->
                 if (result != null) {
-                    user = result
+                    addMarkers(googleMap, result)
                 }
             }
 
-            val saoBenedito = LatLng(-4.0371272, -40.9086704)
-            googleMap.clear()
-            val marker = googleMap.addMarker(
-                MarkerOptions()
-                    .position(saoBenedito)
-                    .title("Meu Marcador")
-            )
+            setInitialPosition(googleMap)
 
-            if (marker != null) {
-                marker.tag = user
+            googleMap.setOnInfoWindowClickListener { marker ->
+                val tag = marker.tag
+
+                if(tag != null){
+                    val provider = tag as Provider
+                    openNewOrderScreen(provider.id)
+                }
             }
-
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(saoBenedito, 13.0f))
         }
 
         return view
     }
 
+    private fun addMarkers(googleMap: GoogleMap, providers: ArrayList<Provider>) {
+        for (provider in providers) {
+            val marker = googleMap.addMarker(
+                MarkerOptions()
+                    .position(
+                        LatLng(
+                            provider.address!!.latitude,
+                            provider.address!!.longitude
+                        )
+                    )
+                    .title(provider.name)
+                    .icon(laundryIcon)
+                    .flat(true)
+            )
+
+            if (marker != null) {
+                marker.tag = provider
+            }
+        }
+    }
+
+
+    private fun setInitialPosition(googleMap: GoogleMap){
+        addressService.getCurrentAddress { result ->
+            if(result != null){
+                val initialPoint = LatLng(result.latitude, result.longitude)
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialPoint, 12.0f))
+            }
+        }
+    }
+
+    private fun openNewOrderScreen(providerId: String) {
+        val bundle = Bundle()
+        bundle.putString("laundry_provider_id", providerId)
+
+        val newOrderFragment = NewOrderFragment()
+        newOrderFragment.arguments = bundle
+
+        val fragmentManager = (context as HomeActivity).supportFragmentManager
+        fragmentManager.beginTransaction().apply {
+            replace(R.id.container_screens, newOrderFragment)
+            addToBackStack("Novo pedido")
+            commit()
+        }
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,23 +131,6 @@ class HomeFragment : Fragment() {
         val homeActivity = requireActivity() as HomeActivity
         homeActivity.showBottomNavigation()
 
-        /*val btnNewOrder: Button = view.findViewById(R.id.btn_new_order)
-        btnNewOrder.setOnClickListener {
-
-            val bundle = Bundle()
-            bundle.putString("laundry_provider_id", "hJRIGH85h1TeS9PBE6yi")
-
-            val newOrderFragment = NewOrderFragment()
-            newOrderFragment.arguments = bundle
-
-            val fragmentManager = requireActivity().supportFragmentManager
-            fragmentManager.beginTransaction().apply {
-                replace(R.id.container_screens, newOrderFragment)
-                addToBackStack(null)
-                commit()
-            }
-        }*/
-
         val btnOpenMyAddressBottomSheet: Button =
             view.findViewById(R.id.btn_open_my_address_bottom_sheet)
 
@@ -116,7 +138,6 @@ class HomeFragment : Fragment() {
             val dialog = SelectAddressFragment()
             dialog.show(requireActivity().supportFragmentManager, "my addresses fragment")
         }
-
 
         val helloTextView: TextView = view.findViewById(R.id.hello_text)
 

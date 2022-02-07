@@ -10,7 +10,7 @@ class AddressService {
     var mAuth = FirebaseAuth.getInstance()
     var db = Firebase.firestore
 
-    fun addAddress(
+    fun addAddressToConsumer(
         id: String,
         street: String,
         number: Int,
@@ -41,6 +41,30 @@ class AddressService {
                 }
             }
     }
+
+    fun addAddressToProvider(
+        id: String,
+        street: String,
+        number: Int,
+        cep: Int,
+        complement: String,
+        latitude: Double,
+        longitude: Double,
+        setResult: (result: Boolean) -> Unit
+    ) {
+        val address = Address(id, street, number, cep, complement, latitude, longitude)
+
+        db.collection("users").document(mAuth.currentUser!!.uid)
+            .update("address", address)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    setResult(true)
+                } else {
+                    setResult(false)
+                }
+            }
+    }
+
 
     fun getAllAddresses(setResult: (result: ArrayList<Address>?) -> Unit) {
         val userRef = db.collection("users").document(mAuth.currentUser!!.uid)

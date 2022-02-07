@@ -4,6 +4,7 @@ import android.content.Intent
 import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
@@ -48,30 +49,61 @@ class AddressRegistrationActivity : AppCompatActivity() {
         val complement = complementEditText.text.toString().trim()
         val geoPoint = getGeoPoint(street, number.toString(), cep.toString())
 
-        addressService.addAddress(id, street, number, cep, complement,
-            geoPoint["latitude"]!!, geoPoint["longitude"]!!) { result ->
-            if (result) {
-                Toast.makeText(
-                    this,
-                    "Endereço adicionado com sucesso",
-                    Toast.LENGTH_SHORT
-                ).show()
 
-                val homeIntent = Intent(this, HomeActivity::class.java)
-                startActivity(homeIntent)
-                finish()
-            } else {
-                Toast.makeText(
-                    this,
-                    "Ocorreu um erro ao adicionar o endereço.",
-                    Toast.LENGTH_SHORT
-                ).show()
+        Log.d("Extras", intent.extras.toString())
+        val accountType = intent.extras!!.get("accountType").toString()
+
+        if (accountType == "Consumidor") {
+            addressService.addAddressToConsumer(
+                id, street, number, cep, complement,
+                geoPoint["latitude"]!!, geoPoint["longitude"]!!
+            ) { result ->
+                if (result) {
+                    showSuccessMessage()
+                    openHomeActivity()
+                } else {
+                    showErrorMessage()
+                }
+            }
+        } else {
+            addressService.addAddressToProvider(
+                id, street, number, cep, complement,
+                geoPoint["latitude"]!!, geoPoint["longitude"]!!
+            ) { result ->
+                if (result) {
+                    showSuccessMessage()
+                    openHomeActivity()
+                } else {
+                    showErrorMessage()
+                }
             }
         }
 
     }
 
-    private fun getGeoPoint(street: String, number: String, cep: String): HashMap<String, Double>{
+    private fun openHomeActivity() {
+        val homeIntent = Intent(this, HomeActivity::class.java)
+        startActivity(homeIntent)
+        finish()
+    }
+
+    private fun showSuccessMessage() {
+        Toast.makeText(
+            this,
+            "Endereço adicionado com sucesso",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun showErrorMessage() {
+        Toast.makeText(
+            this,
+            "Ocorreu um erro ao adicionar o endereço.",
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
+    private fun getGeoPoint(street: String, number: String, cep: String): HashMap<String, Double> {
         val geocoder = Geocoder(this, Locale("pt", "BR"))
         val results = geocoder.getFromLocationName("$street, $number, $cep", 1)
 

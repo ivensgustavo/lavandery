@@ -27,7 +27,6 @@ class UserService {
                 val telephone = document.data!!["telephone"].toString()
                 val email = document.data!!["email"].toString()
                 val accountType = document.data!!["accountType"].toString()
-                val preferences = document.data!!["preferences"] as HashMap<String, Boolean>
                 val profileImageUrl = document.data!!["profileImageUrl"].toString()
 
                 val user = User(
@@ -37,7 +36,6 @@ class UserService {
                     email,
                     telephone,
                     accountType,
-                    preferences,
                     profileImageUrl
                 )
                 setUser(user)
