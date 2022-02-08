@@ -36,8 +36,7 @@ class HomeFragment : Fragment() {
     private val providerService = ProviderService()
     private val addressService = AddressService()
     private val laundryIcon: BitmapDescriptor by lazy {
-        val color = ContextCompat.getColor(requireContext(), R.color.main_blue)
-        BitmapHelper.vectorToBitmap(requireContext(), R.drawable.ic_local_laundry, color)
+        BitmapHelper.vectorToBitmap(requireContext(), R.drawable.ic_pin)
     }
 
     override fun onCreateView(

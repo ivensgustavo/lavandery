@@ -1,12 +1,16 @@
 package dadm.quixada.ufc.lavandery.logic
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
 import dadm.quixada.ufc.lavandery.models.Order
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -133,6 +137,34 @@ class OrderService {
             .addOnFailureListener {
                 setResult(null)
             }
+    }
+
+    fun getUnavailableTimes(providerId: String, collectionDate: Date, setResult: (result: ArrayList<String>) -> Unit) {
+        val myCalendar: Calendar = Calendar.getInstance()
+        myCalendar.add(Calendar.DATE, -1)
+        val previousDay = myCalendar.time
+        myCalendar.add(Calendar.DATE, +2)
+        val nextDay = myCalendar.time
+
+        val unavailable = ArrayList<String>()
+
+        db.collection("orders").whereEqualTo("providerId", providerId)
+            .whereGreaterThan("collectionDate", previousDay)
+            .whereLessThan("collectionDate", nextDay)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Log.d("Pedido encontrado", "viva")
+                    val collectionTime = document.data["collectionTime"].toString()
+                    Log.d("CollectionTime", collectionTime)
+                    val quebra = collectionTime.split(":")
+                    Log.d("Teste de gambiarra", quebra.toString())
+                    unavailable.add(quebra[0])
+                }
+
+                setResult(unavailable)
+            }
+
     }
 
 }

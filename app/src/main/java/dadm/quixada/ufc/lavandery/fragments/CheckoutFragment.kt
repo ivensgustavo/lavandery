@@ -17,12 +17,14 @@ import android.view.View.MeasureSpec
 import android.widget.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dadm.quixada.ufc.lavandery.HomeActivity
+import dadm.quixada.ufc.lavandery.helpers.AvaiableTimesHelper
 import dadm.quixada.ufc.lavandery.logic.AddressService
 import dadm.quixada.ufc.lavandery.logic.OrderService
 import dadm.quixada.ufc.lavandery.models.Address
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class CheckoutFragment : Fragment() {
@@ -51,13 +53,15 @@ class CheckoutFragment : Fragment() {
 
     private val orderService = OrderService()
     private val addressService = AddressService()
+    private lateinit var myView: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_checkout, container, false)
+        myView = inflater.inflate(R.layout.fragment_checkout, container, false)
+        return myView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -244,12 +248,52 @@ class CheckoutFragment : Fragment() {
     private fun changeCollectionDate(calendar: Calendar) {
         this.collectionDate = calendar.time
         this.collectionDateTextView.text = formatDate(calendar.time)
+        this.setAvailableTimesForCollection()
     }
 
     private fun changeDeliveryDate(calendar: Calendar) {
         this.deliveryDate = calendar.time
         this.deliveryDateTextView.text = formatDate(calendar.time)
+        setAvailableTimesForDelivery()
     }
+
+    private fun setAvailableTimesForCollection(){
+        val providerId = arguments?.get("laundry_provider_id") as String
+
+        val allTimes = AvaiableTimesHelper.getAllCollectionTimesId()
+
+        for( item in allTimes){
+            val rb: RadioButton = myView.findViewById(item.value)
+            rb.visibility = View.VISIBLE
+        }
+
+        orderService.getUnavailableTimes(providerId, this.collectionDate){ result ->  
+            for( time in result){
+                val rb: RadioButton = myView.findViewById(allTimes[time]!!)
+                rb.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun setAvailableTimesForDelivery(){
+        val providerId = arguments?.get("laundry_provider_id") as String
+
+        val allTimes = AvaiableTimesHelper.getAllDeliveryTimesId()
+
+        for( item in allTimes){
+            val rb: RadioButton = myView.findViewById(item.value)
+            rb.visibility = View.VISIBLE
+        }
+
+        orderService.getUnavailableTimes(providerId, this.collectionDate){ result ->
+            for( time in result){
+                val rb: RadioButton = myView.findViewById(allTimes[time]!!)
+                rb.visibility = View.GONE
+            }
+        }
+    }
+
+
 
     private fun setListViewHeight() {
 

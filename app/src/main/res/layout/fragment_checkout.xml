@@ -38,16 +38,16 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="24dp">
+                android:layout_marginTop="24dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Endereço de entrega"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -243,6 +243,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_collection_time_13"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -253,6 +254,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_collection_time_14"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -263,6 +265,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_collection_time_15"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -273,13 +276,14 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_collection_time_16"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
                                 android:background="@drawable/radio_selector"
                                 android:button="@android:color/transparent"
                                 android:padding="17dp"
-                                android:text="13:00"
+                                android:text="16:00"
                                 android:textColor="@drawable/radio_text_color" />
 
                         </RadioGroup>
@@ -375,6 +379,7 @@
                             android:orientation="horizontal">
 
                             <RadioButton
+                                android:id="@+id/radio_delivery_time_8"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/radio_selector"
@@ -384,6 +389,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_delivery_time_9"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -394,6 +400,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_delivery_time_10"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -404,6 +411,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_delivery_time_11"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -414,6 +422,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_delivery_time_12"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -424,6 +433,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_delivery_time_13"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -434,6 +444,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_delivery_time_14"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -444,6 +455,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_delivery_time_15"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -454,6 +466,7 @@
                                 android:textColor="@drawable/radio_text_color" />
 
                             <RadioButton
+                                android:id="@+id/radio_delivery_time_16"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -492,8 +505,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:src="@drawable/dispatch_line"
-                android:layerType="software" />
+                android:layerType="software"
+                android:src="@drawable/dispatch_line" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
