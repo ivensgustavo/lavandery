@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nº de pedidos para esta semana:"
+            android:text="Nº de pedidos nos próximos 7 dias:"
             android:textSize="16sp"/>
 
         <TextView

@@ -3,10 +3,7 @@ package dadm.quixada.ufc.lavandery.helpers
 import dadm.quixada.ufc.lavandery.R
 
 
-
-import kotlin.jvm.internal.Intrinsics
-
-object AvaiableTimesHelper {
+object AvailableTimesHelper {
 
     fun getAllCollectionTimesId(): HashMap<String, Int> {
         val map = HashMap<String, Int>()

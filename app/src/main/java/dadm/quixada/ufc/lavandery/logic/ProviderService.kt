@@ -1,5 +1,6 @@
 package dadm.quixada.ufc.lavandery.logic
 
+import android.content.ContentValues
 import android.util.Log
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -13,6 +14,7 @@ import kotlin.collections.HashMap
 class ProviderService {
 
     private val db = Firebase.firestore
+    private val orderService = OrderService()
 
     fun createProvider(
     id: String,
@@ -84,6 +86,14 @@ class ProviderService {
                         address
                     )
 
+                    var totalOrdersInWeek = 0
+                        orderService.getTotalOrdersInThisWeek(provider.id){ totalOrders ->
+                            totalOrdersInWeek = totalOrders
+                    }
+
+                   provider.ordersInWeek = totalOrdersInWeek
+                    Log.d("Teste", provider.ordersInWeek.toString())
+
                     providers.add(provider)
                 }
 
@@ -91,6 +101,7 @@ class ProviderService {
 
             }
             .addOnFailureListener {
+                Log.d(ContentValues.TAG, "Error fetching all providers.")
                 setResult(null)
             }
     }

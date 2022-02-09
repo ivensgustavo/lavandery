@@ -13,6 +13,7 @@ import com.google.android.gms.maps.model.Marker
 import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.fragments.NewOrderFragment
+import dadm.quixada.ufc.lavandery.models.Provider
 import dadm.quixada.ufc.lavandery.models.User
 
 
@@ -20,7 +21,7 @@ class MarkerInfoWindowAdapter(
     private val context: Context
 ) : GoogleMap.InfoWindowAdapter {
     override fun getInfoContents(marker: Marker): View? {
-        val provider = marker?.tag as? User ?: return null
+        val provider = marker?.tag as? Provider ?: return null
 
         val view = LayoutInflater.from(context).inflate(R.layout.marker_info_contents, null)
 
@@ -28,7 +29,7 @@ class MarkerInfoWindowAdapter(
         val numberOfOrderTextView: TextView = view.findViewById(R.id.number_of_orders)
 
         providerNameTextView.text = provider.name
-        numberOfOrderTextView.text = "10"
+        numberOfOrderTextView.text = provider.ordersInWeek.toString()
 
         return view;
     }

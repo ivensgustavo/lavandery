@@ -1,7 +1,10 @@
 package dadm.quixada.ufc.lavandery.fragments
 
 
+import android.annotation.SuppressLint
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
@@ -39,6 +44,9 @@ class HomeFragment : Fragment() {
         BitmapHelper.vectorToBitmap(requireContext(), R.drawable.ic_pin)
     }
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,59 +61,76 @@ class HomeFragment : Fragment() {
             commit()
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
         mapFragment.getMapAsync { googleMap ->
             googleMap.setInfoWindowAdapter(MarkerInfoWindowAdapter(requireActivity()))
 
-            providerService.getAllProviders { result ->
-                if (result != null) {
-                    addMarkers(googleMap, result)
+            this.fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                if (location !== null) {
+                    addMarkers(googleMap)
+                    setInitialPosition(googleMap, location)
                 }
+            }.addOnFailureListener{
+                Log.d("Error on map","error getting current location")
             }
 
-            setInitialPosition(googleMap)
-
-            googleMap.setOnInfoWindowClickListener { marker ->
-                val tag = marker.tag
-
-                if(tag != null){
-                    val provider = tag as Provider
-                    openNewOrderScreen(provider.id)
-                }
-            }
         }
 
         return view
     }
 
-    private fun addMarkers(googleMap: GoogleMap, providers: ArrayList<Provider>) {
-        for (provider in providers) {
-            val marker = googleMap.addMarker(
-                MarkerOptions()
-                    .position(
-                        LatLng(
-                            provider.address!!.latitude,
-                            provider.address!!.longitude
-                        )
+    private fun addMarkers(googleMap: GoogleMap) {
+        providerService.getAllProviders { result ->
+            if (result != null) {
+                for (provider in result) {
+                    val marker = googleMap.addMarker(
+                        MarkerOptions()
+                            .position(
+                                LatLng(
+                                    provider.address!!.latitude,
+                                    provider.address!!.longitude
+                                )
+                            )
+                            .title(provider.name)
+                            .icon(laundryIcon)
+                            .flat(true)
                     )
-                    .title(provider.name)
-                    .icon(laundryIcon)
-                    .flat(true)
-            )
 
-            if (marker != null) {
-                marker.tag = provider
+                    if (marker != null) {
+                        marker.tag = provider
+                    }
+
+                    googleMap.setOnInfoWindowClickListener { marker ->
+                        val tag = marker.tag
+
+                        if(tag != null){
+                            val provider = tag as Provider
+                            openNewOrderScreen(provider.id)
+                        }
+                    }
+                }
             }
         }
+
     }
 
 
-    private fun setInitialPosition(googleMap: GoogleMap){
-        addressService.getCurrentAddress { result ->
-            if(result != null){
-                val initialPoint = LatLng(result.latitude, result.longitude)
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(initialPoint, 12.0f))
-            }
-        }
+    private fun setInitialPosition(googleMap: GoogleMap, location: Location){
+        googleMap.addMarker(
+            MarkerOptions()
+                .position(LatLng(location.latitude, location.longitude))
+                .title("Localização atual")
+        )
+        googleMap.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                    location.latitude,
+                    location.longitude
+                ),
+                13.0f
+            )
+        )
     }
 
     private fun openNewOrderScreen(providerId: String) {

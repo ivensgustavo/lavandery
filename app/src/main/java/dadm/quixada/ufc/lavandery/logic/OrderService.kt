@@ -1,5 +1,6 @@
 package dadm.quixada.ufc.lavandery.logic
 
+import android.content.ContentValues
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -141,6 +142,7 @@ class OrderService {
 
     fun getUnavailableTimes(providerId: String, collectionDate: Date, setResult: (result: ArrayList<String>) -> Unit) {
         val myCalendar: Calendar = Calendar.getInstance()
+        myCalendar.time = collectionDate
         myCalendar.add(Calendar.DATE, -1)
         val previousDay = myCalendar.time
         myCalendar.add(Calendar.DATE, +2)
@@ -163,6 +165,28 @@ class OrderService {
                 }
 
                 setResult(unavailable)
+            }
+
+    }
+
+    fun getTotalOrdersInThisWeek(providerId: String, setResult: (totalOrdersInWeek: Int) -> Unit){
+        val myCalendar: Calendar = Calendar.getInstance()
+        myCalendar.time = Date()
+        myCalendar.add(Calendar.DATE, -1)
+        val previousDay = myCalendar.time
+        myCalendar.add(Calendar.DATE, +8)
+        val nextWeekDay = myCalendar.time
+
+        db.collection("orders").whereEqualTo("providerId", providerId)
+            .whereGreaterThan("deliveryDate", previousDay)
+            .whereLessThan("deliveryDate", nextWeekDay)
+            .get()
+            .addOnSuccessListener { documents ->
+                Log.d("Documentos no total", documents.size().toString())
+                setResult(documents.size())
+            }
+            .addOnFailureListener { exception ->
+               Log.d(ContentValues.TAG, "error when fetching total orders for the week")
             }
 
     }

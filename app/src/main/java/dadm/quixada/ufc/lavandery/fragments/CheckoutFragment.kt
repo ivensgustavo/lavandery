@@ -17,14 +17,13 @@ import android.view.View.MeasureSpec
 import android.widget.*
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dadm.quixada.ufc.lavandery.HomeActivity
-import dadm.quixada.ufc.lavandery.helpers.AvaiableTimesHelper
+import dadm.quixada.ufc.lavandery.helpers.AvailableTimesHelper
 import dadm.quixada.ufc.lavandery.logic.AddressService
 import dadm.quixada.ufc.lavandery.logic.OrderService
 import dadm.quixada.ufc.lavandery.models.Address
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class CheckoutFragment : Fragment() {
@@ -260,7 +259,7 @@ class CheckoutFragment : Fragment() {
     private fun setAvailableTimesForCollection(){
         val providerId = arguments?.get("laundry_provider_id") as String
 
-        val allTimes = AvaiableTimesHelper.getAllCollectionTimesId()
+        val allTimes = AvailableTimesHelper.getAllCollectionTimesId()
 
         for( item in allTimes){
             val rb: RadioButton = myView.findViewById(item.value)
@@ -278,7 +277,7 @@ class CheckoutFragment : Fragment() {
     private fun setAvailableTimesForDelivery(){
         val providerId = arguments?.get("laundry_provider_id") as String
 
-        val allTimes = AvaiableTimesHelper.getAllDeliveryTimesId()
+        val allTimes = AvailableTimesHelper.getAllDeliveryTimesId()
 
         for( item in allTimes){
             val rb: RadioButton = myView.findViewById(item.value)

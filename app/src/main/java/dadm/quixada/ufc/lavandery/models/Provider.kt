@@ -11,6 +11,7 @@ class Provider(
 ) : User(id, name, surname, email, telephone, accountType, profileImageUrl) {
 
     var address: Address? = null
+    var ordersInWeek = 0
 
     constructor(
         id: String,
