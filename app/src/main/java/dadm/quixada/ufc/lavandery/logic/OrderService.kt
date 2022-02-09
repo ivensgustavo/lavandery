@@ -156,11 +156,21 @@ class OrderService {
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    Log.d("Pedido encontrado", "viva")
                     val collectionTime = document.data["collectionTime"].toString()
-                    Log.d("CollectionTime", collectionTime)
                     val quebra = collectionTime.split(":")
-                    Log.d("Teste de gambiarra", quebra.toString())
+                    unavailable.add(quebra[0])
+                }
+
+            }
+
+        db.collection("orders").whereEqualTo("providerId", providerId)
+            .whereGreaterThan("deliveryDate", previousDay)
+            .whereLessThan("deliveryDate", nextDay)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val collectionTime = document.data["collectionTime"].toString()
+                    val quebra = collectionTime.split(":")
                     unavailable.add(quebra[0])
                 }
 
@@ -182,7 +192,6 @@ class OrderService {
             .whereLessThan("deliveryDate", nextWeekDay)
             .get()
             .addOnSuccessListener { documents ->
-                Log.d("Documentos no total", documents.size().toString())
                 setResult(documents.size())
             }
             .addOnFailureListener { exception ->

@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,20 +25,17 @@ import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.MarkerInfoWindowAdapter
 import dadm.quixada.ufc.lavandery.helpers.BitmapHelper
-import dadm.quixada.ufc.lavandery.logic.AddressService
 import dadm.quixada.ufc.lavandery.logic.ProviderService
 import dadm.quixada.ufc.lavandery.logic.UserService
 
 import dadm.quixada.ufc.lavandery.models.Provider
 
-import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment() {
 
     private val userService = UserService()
     private val providerService = ProviderService()
-    private val addressService = AddressService()
     private val laundryIcon: BitmapDescriptor by lazy {
         BitmapHelper.vectorToBitmap(requireContext(), R.drawable.ic_pin)
     }

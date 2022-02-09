@@ -17,15 +17,14 @@ class ProviderService {
     private val orderService = OrderService()
 
     fun createProvider(
-    id: String,
-    name: String,
-    surname: String,
-    email: String,
-    telephone: String,
-    accountType: String,
-    setResult: (result: Boolean) -> Unit
-    )
-    {
+        id: String,
+        name: String,
+        surname: String,
+        email: String,
+        telephone: String,
+        accountType: String,
+        setResult: (result: Boolean) -> Unit
+    ) {
         val preferences = HashMap<String, Boolean>()
         preferences["ironed_clothes"] = false
         preferences["orders_at_reception"] = false
@@ -47,7 +46,6 @@ class ProviderService {
             }
     }
 
-
     fun getAllProviders(setResult: (result: ArrayList<Provider>?) -> Unit) {
         db.collection("users").whereEqualTo("accountType", "Prestador de serviços de lavanderia")
             .get()
@@ -55,7 +53,7 @@ class ProviderService {
 
                 val providers = ArrayList<Provider>()
 
-                for(document in documents){
+                for (document in documents) {
                     val id = document.data["id"].toString()
                     val name = document.data["name"].toString()
                     val surname = document.data["surname"].toString()
@@ -86,13 +84,9 @@ class ProviderService {
                         address
                     )
 
-                    var totalOrdersInWeek = 0
-                        orderService.getTotalOrdersInThisWeek(provider.id){ totalOrders ->
-                            totalOrdersInWeek = totalOrders
+                    orderService.getTotalOrdersInThisWeek(provider.id) { totalOrders ->
+                        provider.ordersInWeek = totalOrders
                     }
-
-                   provider.ordersInWeek = totalOrdersInWeek
-                    Log.d("Teste", provider.ordersInWeek.toString())
 
                     providers.add(provider)
                 }

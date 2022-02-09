@@ -284,7 +284,7 @@ class CheckoutFragment : Fragment() {
             rb.visibility = View.VISIBLE
         }
 
-        orderService.getUnavailableTimes(providerId, this.collectionDate){ result ->
+        orderService.getUnavailableTimes(providerId, this.deliveryDate){ result ->
             for( time in result){
                 val rb: RadioButton = myView.findViewById(allTimes[time]!!)
                 rb.visibility = View.GONE
