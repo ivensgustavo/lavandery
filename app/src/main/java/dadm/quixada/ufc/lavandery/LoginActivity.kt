@@ -15,6 +15,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import dadm.quixada.ufc.lavandery.logic.AuthService
+import dadm.quixada.ufc.lavandery.logic.UserService
+import dadm.quixada.ufc.lavandery.models.User
 import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
@@ -31,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var signInWithGoogleButton: Button
     private lateinit var signUpLink: TextView
     private val authService = AuthService()
+    private val userService = UserService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,12 +88,10 @@ class LoginActivity : AppCompatActivity() {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
-            authService.signInWithEmailAndPassword(email, password){ result ->
-                if(result){
-                    val homeIntent = Intent(this, HomeActivity::class.java)
-                    startActivity(homeIntent)
-                    finish()
-                }else{
+            authService.signInWithEmailAndPassword(email, password) { result ->
+                if (result) {
+                    browseTheUser()
+                } else {
                     Toast.makeText(
                         this,
                         "Ocorreu um erro ao realizar login. Tente novamente",
@@ -138,24 +139,36 @@ class LoginActivity : AppCompatActivity() {
 
             if (task.isSuccessful) {
                 try {
-                    // O login com o google ocorreu com sucesso
                     val account = task.getResult(ApiException::class.java)!!
-                    Log.d("LoginActivity", "firebaseAuthWithGoogle:" + account.id)
-                    authService.firebaseAuthWithGoogle(account.idToken!!){ result ->
-                        if(result){
-                            val homeIntent = Intent(this, HomeActivity::class.java)
-                            startActivity(homeIntent)
-                            finish()
+                    authService.firebaseAuthWithGoogle(account.idToken!!) { result ->
+                        if (result) {
+                            browseTheUser()
                         }
                     }
                 } catch (e: ApiException) {
-                    // Ocorreu falha ao executar o login
                     Log.w("LoginActivity", "Google sign in failed", e)
                 }
             } else {
                 Log.w("LoginActivity", exception.toString())
             }
 
+        }
+    }
+
+    private fun browseTheUser() {
+
+        userService.getUser(mAuth.currentUser!!.uid) { loggedUser ->
+            if (loggedUser != null) {
+                if (loggedUser.accountType == "Consumidor de serviços de lavanderia") {
+                    val consumerHomeIntent = Intent(this, HomeActivity::class.java)
+                    startActivity(consumerHomeIntent)
+                    finish()
+                } else {
+                    val providerHomeIntent = Intent(this, ProviderHomeActivity::class.java)
+                    startActivity(providerHomeIntent)
+                    finish()
+                }
+            }
         }
     }
 }

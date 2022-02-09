@@ -17,8 +17,12 @@ class AuthService {
 
         mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
+                if(!task.isSuccessful){
+                    Log.d("Erro no login", task.exception?.message.toString())
+                }
                setResult(task.isSuccessful)
             }
+
 
     }
 

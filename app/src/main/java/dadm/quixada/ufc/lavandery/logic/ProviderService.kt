@@ -2,9 +2,13 @@ package dadm.quixada.ufc.lavandery.logic
 
 import android.content.ContentValues
 import android.util.Log
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.models.Address
+import dadm.quixada.ufc.lavandery.models.Order
 import dadm.quixada.ufc.lavandery.models.Provider
 import java.util.*
 import kotlin.collections.ArrayList
@@ -13,6 +17,7 @@ import kotlin.collections.HashMap
 
 class ProviderService {
 
+    private val mAuth = FirebaseAuth.getInstance()
     private val db = Firebase.firestore
     private val orderService = OrderService()
 
@@ -96,6 +101,42 @@ class ProviderService {
             }
             .addOnFailureListener {
                 Log.d(ContentValues.TAG, "Error fetching all providers.")
+                setResult(null)
+            }
+    }
+
+    fun getOrders(status: String, setResult: (result: ArrayList<Order>?) -> Unit) {
+
+        val providerId = mAuth.currentUser!!.uid
+        val orders = ArrayList<Order>()
+
+        db.collection("orders").whereEqualTo("providerId", providerId)
+            .whereEqualTo("status", status).orderBy("creationDate", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val order = Order(
+                        document.data["id"].toString(),
+                        document.data["consumerId"].toString(),
+                        document.data["providerId"].toString(),
+                        document.data["totalItems"].toString().toInt(),
+                        document.data!!["value"].toString().toFloat(),
+                        document.data!!["status"].toString(),
+                        (document.data!!["collectionDate"] as Timestamp).toDate(),
+                        (document.data!!["deliveryDate"] as Timestamp).toDate(),
+                        document.data!!["collectionTime"].toString(),
+                        document.data!!["deliveryTime"].toString(),
+                    )
+
+                    order.addressId = document.data["addressId"].toString()
+
+                    orders.add(order)
+                }
+
+                setResult(orders)
+
+            }
+            .addOnFailureListener {
                 setResult(null)
             }
     }

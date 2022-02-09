@@ -62,6 +62,22 @@ class OrderService {
             }
     }
 
+    fun updateStatus(id: String, status: String, setResult: (result: Boolean) -> Unit){
+        db.collection("orders").document(id)
+            .update("status", status)
+            .addOnCompleteListener { task ->
+                setResult(task.isSuccessful)
+            }
+    }
+
+    fun removeOrder(id: String, setResult: (result: Boolean) -> Unit){
+        db.collection("orders").document(id)
+            .delete()
+            .addOnCompleteListener { task ->
+                setResult(task.isSuccessful)
+            }
+    }
+
 
     fun getOrders(setResult: (result: ArrayList<Order>?) -> Unit) {
 

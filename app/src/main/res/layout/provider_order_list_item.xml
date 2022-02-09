@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/consumer_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome do consumidor"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/label_total_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total de items:"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/consumer_name" />
+
+        <TextView
+            android:id="@+id/total_items"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="10"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@id/label_total_items"
+            app:layout_constraintTop_toBottomOf="@id/consumer_name" />
+
+        <TextView
+            android:id="@+id/label_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Valor:"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@id/total_items"
+            app:layout_constraintTop_toBottomOf="@id/consumer_name" />
+
+        <TextView
+            android:id="@+id/order_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="100"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@id/label_value"
+            app:layout_constraintTop_toBottomOf="@id/consumer_name" />
+
+        <TextView
+            android:id="@+id/label_collection_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coleta:"
+            android:textSize="14dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_total_items" />
+
+        <TextView
+            android:id="@+id/collection_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="14/02/2022:"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@id/label_collection_date"
+            app:layout_constraintTop_toBottomOf="@id/label_total_items" />
+
+        <TextView
+            android:id="@+id/label_delivery_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Entrega:"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@id/collection_date"
+            app:layout_constraintTop_toBottomOf="@id/label_value" />
+
+        <TextView
+            android:id="@+id/delivery_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="14/02/2022:"
+            android:textSize="14dp"
+            app:layout_constraintStart_toEndOf="@+id/label_delivery_date"
+            app:layout_constraintTop_toBottomOf="@id/order_value" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_single_arrow_right"
+            app:layout_constraintBottom_toTopOf="@+id/delivery_date"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

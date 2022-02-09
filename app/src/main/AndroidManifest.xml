@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Lavandery">
         <activity
+            android:name=".ProviderHomeActivity"
+            android:exported="true" />
+        <activity
             android:name=".AboutActivity"
             android:exported="true" />
         <activity

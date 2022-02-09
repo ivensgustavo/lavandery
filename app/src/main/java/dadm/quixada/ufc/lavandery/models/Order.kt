@@ -67,4 +67,23 @@ class Order(
         this.collectionTime = collectionTime
         this.deliveryTime = deliveryTime
     }
+
+    constructor(
+                id: String,
+                consumerId: String,
+                providerId: String,
+                totalItems: Int,
+                value: Float,
+                status: String,
+                collectionDate: Date,
+                deliveryDate: Date,
+                collectionTime: String,
+                deliveryTime: String
+    ): this(consumerId, providerId, totalItems, value, status){
+        this.id = id
+        this.collectionDate = collectionDate
+        this.deliveryDate = deliveryDate
+        this.collectionTime = collectionTime
+        this.deliveryTime = deliveryTime
+    }
 }
