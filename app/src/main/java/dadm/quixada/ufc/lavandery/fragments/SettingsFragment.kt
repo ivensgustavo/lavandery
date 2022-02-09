@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import dadm.quixada.ufc.lavandery.R
 import dadm.quixada.ufc.lavandery.adapters.SettingsAdapter
@@ -35,7 +34,6 @@ class SettingsFragment : Fragment() {
 
         settingsList.add(SettingItem("Preferências de serviço", R.drawable.ic_services_preferences))
         settingsList.add(SettingItem("Dados da conta", R.drawable.ic_account_settings))
-        settingsList.add(SettingItem("Sobre o Lavandery", R.drawable.ic_outline_info))
 
         val adapter = SettingsAdapter(requireActivity(), settingsList)
         val listView: ListView = view.findViewById(R.id.settings_list_view)
@@ -54,7 +52,6 @@ class SettingsFragment : Fragment() {
                         commit()
                     }
                 }
-                else -> Toast.makeText(context, "Ainda não implementado", Toast.LENGTH_SHORT).show()
             }
         }
     }

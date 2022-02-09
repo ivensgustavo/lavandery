@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dadm.quixada.ufc.lavandery.internalModels.LaundryBasketItem
@@ -67,7 +68,7 @@ class OrderService {
         val consumerId = mAuth.currentUser!!.uid
         val orders = ArrayList<Order>()
 
-        db.collection("orders").whereEqualTo("consumerId", consumerId)
+        db.collection("orders").whereEqualTo("consumerId", consumerId).orderBy("creationDate", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {

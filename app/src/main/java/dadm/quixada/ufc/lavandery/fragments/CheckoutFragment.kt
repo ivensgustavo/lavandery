@@ -126,7 +126,7 @@ class CheckoutFragment : Fragment() {
             Date(),
             this.collectionDate,
             this.deliveryDate,
-            "Enviado",
+            "Agendado",
             collectionTimeSelected,
             deliveryTimeSelected,
             this.currentAddress.id

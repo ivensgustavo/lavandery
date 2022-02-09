@@ -80,6 +80,7 @@ class SelectAddressFragment : BottomSheetDialogFragment() {
 
         btnAddNewAddress.setOnClickListener {
             val intent = Intent(context, AddressRegistrationActivity::class.java)
+            intent.putExtra("accountType", "Consumidor")
             startActivity(intent)
         }
     }
