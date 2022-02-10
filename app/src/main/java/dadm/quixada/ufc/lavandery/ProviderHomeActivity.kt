@@ -19,6 +19,9 @@ class ProviderHomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_provider_home)
 
+        val bundle = Bundle()
+        bundle.putString("accountType", "Provedor")
+        settingsFragment.arguments = bundle
         setBottomNavigationActions()
         changeCurrentFragment(providerHomeFragment)
     }
@@ -38,7 +41,7 @@ class ProviderHomeActivity : AppCompatActivity() {
 
     private fun changeCurrentFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.container_provider_screens, fragment)
+            replace(R.id.container_screens, fragment)
             commit()
         }
     }

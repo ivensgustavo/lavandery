@@ -74,7 +74,7 @@ class ProviderHomeFragment : Fragment() {
         providerOrdersFragment.arguments = bundle
         val fragmentManager = (context as ProviderHomeActivity).supportFragmentManager
         fragmentManager.beginTransaction().apply {
-            replace(R.id.container_provider_screens, providerOrdersFragment)
+            replace(R.id.container_screens, providerOrdersFragment)
             addToBackStack("Novo pedido")
             commit()
         }

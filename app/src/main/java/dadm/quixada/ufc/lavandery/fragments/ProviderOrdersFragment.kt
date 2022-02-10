@@ -88,7 +88,7 @@ class ProviderOrdersFragment : Fragment() {
                 acceptRequestFragment.setOrder(result)
 
                 requireActivity().supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.container_provider_screens, acceptRequestFragment)
+                    replace(R.id.container_screens, acceptRequestFragment)
                     addToBackStack(null)
                     commit()
                 }
@@ -103,7 +103,7 @@ class ProviderOrdersFragment : Fragment() {
                 updateStatusFragment.setOrder(result)
 
                 requireActivity().supportFragmentManager.beginTransaction().apply {
-                    replace(R.id.container_provider_screens, updateStatusFragment)
+                    replace(R.id.container_screens, updateStatusFragment)
                     addToBackStack(null)
                     commit()
                 }

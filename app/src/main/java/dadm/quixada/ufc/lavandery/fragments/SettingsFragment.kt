@@ -32,8 +32,14 @@ class SettingsFragment : Fragment() {
 
         val settingsList: ArrayList<SettingItem> = ArrayList()
 
-        settingsList.add(SettingItem("Preferências de serviço", R.drawable.ic_services_preferences))
+        val accountType = arguments?.get("accountType") as String
+
         settingsList.add(SettingItem("Dados da conta", R.drawable.ic_account_settings))
+
+        if(accountType == "Consumidor"){
+            settingsList.add(SettingItem("Preferências de serviço", R.drawable.ic_services_preferences))
+        }
+        
 
         val adapter = SettingsAdapter(requireActivity(), settingsList)
         val listView: ListView = view.findViewById(R.id.settings_list_view)
@@ -42,16 +48,13 @@ class SettingsFragment : Fragment() {
         listView.setOnItemClickListener { adapterView, view, itemPosition, l ->
             when (itemPosition) {
                 0 -> openNewSettingGroup(
+                    AccountSettingsFragment(),
+                    "account_settings_fragment"
+                )
+                1 -> openNewSettingGroup(
                     ConsumerPreferencesFragment(),
                     "consumer_preferences_fragment"
                 )
-                1 -> {
-                    requireActivity().supportFragmentManager.beginTransaction().apply {
-                        replace(R.id.container_screens, AccountSettingsFragment())
-                        addToBackStack("account_settings_fragment")
-                        commit()
-                    }
-                }
             }
         }
     }

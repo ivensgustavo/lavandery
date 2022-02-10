@@ -28,6 +28,10 @@ class HomeActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        val bundle = Bundle()
+        bundle.putString("accountType", "Consumidor")
+        settingsFragment.arguments = bundle
+
         changeCurrentFragment(homeFragment)
         setBottomNavigationActions()
     }
