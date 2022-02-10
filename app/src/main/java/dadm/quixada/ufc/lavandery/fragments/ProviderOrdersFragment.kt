@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
+import android.widget.TextView
 import android.widget.Toast
 import dadm.quixada.ufc.lavandery.HomeActivity
 import dadm.quixada.ufc.lavandery.R
@@ -22,6 +23,7 @@ class ProviderOrdersFragment : Fragment() {
     private lateinit var orderListView: ListView
     private val providerService = ProviderService()
     private val orderService = OrderService()
+    private var screenTitle: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,13 +46,42 @@ class ProviderOrdersFragment : Fragment() {
         this.orderListView.adapter = this.providerOrdersAdapter
 
         this.orderListView.setOnItemClickListener { _, _, position, _ ->
-
             openOrderDetails(this.orderList[position].id)
+        }
+
+        this.screenTitle =  arguments?.get("screenTitle") as String
+        val screenTitleTextView: TextView = view.findViewById(R.id.screen_title)
+        screenTitleTextView.text = this.screenTitle
+    }
+
+    private fun getOrdersFromDB(view: View) {
+
+        val orderStatus = arguments?.get("orderStatus") as String
+
+        providerService.getOrders(orderStatus) { orders ->
+            if(orders != null){
+                this.orderList = orders
+                this.initializeViews(view)
+            }else{
+                Toast.makeText(
+                    context,
+                    "Ocorreu um erro ao buscar seus pedidos",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
-    private fun openOrderDetails(orderId: String) {
+    private fun openOrderDetails(orderId: String){
 
+        if(this.screenTitle == "Novos pedidos"){
+            openAcceptFragment(orderId)
+        }else{
+            openOrderUpdateStatusFragment(orderId)
+        }
+    }
+
+    private fun openAcceptFragment(orderId: String){
         orderService.getOrder(orderId) { result ->
             if (result != null) {
                 val  acceptRequestFragment = AcceptRequestFragment()
@@ -65,18 +96,17 @@ class ProviderOrdersFragment : Fragment() {
         }
     }
 
-    private fun getOrdersFromDB(view: View) {
+    private fun openOrderUpdateStatusFragment(orderId: String){
+        orderService.getOrder(orderId) { result ->
+            if (result != null) {
+                val  updateStatusFragment = ProviderOrderDetailsFragment()
+                updateStatusFragment.setOrder(result)
 
-        providerService.getOrders("Enviado") { orders ->
-            if(orders != null){
-                this.orderList = orders
-                this.initializeViews(view)
-            }else{
-                Toast.makeText(
-                    context,
-                    "Ocorreu um erro ao buscar seus pedidos",
-                    Toast.LENGTH_SHORT
-                ).show()
+                requireActivity().supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.container_provider_screens, updateStatusFragment)
+                    addToBackStack(null)
+                    commit()
+                }
             }
         }
     }

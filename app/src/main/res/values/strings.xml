@@ -34,4 +34,11 @@
     <string name="label_sign_out_app">Sair do app</string>
     <string name="total_label">Total</string>
     <string name="address_label">Endereço</string>
+
+    <string-array name="status">
+        <item>Agendado</item>
+        <item>Lavando</item>
+        <item>Transportando</item>
+        <item>Entregue</item>
+    </string-array>
 </resources>
