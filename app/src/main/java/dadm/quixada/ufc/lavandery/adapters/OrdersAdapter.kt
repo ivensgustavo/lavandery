@@ -78,6 +78,7 @@ class OrdersAdapter(private val context: Activity, private val orderList: ArrayL
 
     private fun resolveIcon(status: String): Int {
         return when (status) {
+            "Enviado" -> R.drawable.ic_sent
             "Lavando" -> R.drawable.ic_lavando
             "Agendado" -> R.drawable.ic_agendado
             "Transportando" -> R.drawable.ic_transportando
@@ -87,6 +88,7 @@ class OrdersAdapter(private val context: Activity, private val orderList: ArrayL
 
     private fun resolveColor(status: String): Int {
         return when (status) {
+            "Enviado" -> R.drawable.bg_enviado
             "Lavando" -> R.drawable.bg_lavando
             "Agendado" -> R.drawable.bg_agendado
             "Transportando" -> R.drawable.bg_transportando

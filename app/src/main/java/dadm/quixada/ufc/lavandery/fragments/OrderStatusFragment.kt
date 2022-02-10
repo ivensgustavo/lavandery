@@ -1,6 +1,7 @@
 package dadm.quixada.ufc.lavandery.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,12 @@ import dadm.quixada.ufc.lavandery.R
 
 class OrderStatusFragment : Fragment() {
 
+    private lateinit var bgStatusSent: LinearLayout
     private lateinit var bgStatusScheduled: LinearLayout
     private lateinit var bgStatusPickedUp: LinearLayout
     private lateinit var bgStatusWashing: LinearLayout
     private lateinit var bgStatusDelivered: LinearLayout
+    private lateinit var iconStatusSent: ImageView
     private lateinit var iconStatusScheduled: ImageView
     private lateinit var iconStatusPickedUp: ImageView
     private lateinit var iconStatusWashing: ImageView
@@ -38,10 +41,12 @@ class OrderStatusFragment : Fragment() {
     }
 
     private fun initializeViews(view: View){
+        bgStatusSent = view.findViewById(R.id.order_details_status_sent)
         bgStatusScheduled = view.findViewById(R.id.order_details_status_scheduled)
         bgStatusPickedUp = view.findViewById(R.id.order_details_status_transporting)
         bgStatusWashing= view.findViewById(R.id.order_details_status_washing)
         bgStatusDelivered = view.findViewById(R.id.order_details_status_delivered)
+        iconStatusSent = view.findViewById(R.id.order_details_img_status_sent)
         iconStatusScheduled = view.findViewById(R.id.order_details_img_status_scheduled)
         iconStatusPickedUp = view.findViewById(R.id.order_details_img_status_transporting)
         iconStatusWashing = view.findViewById(R.id.order_details_img_status_washing)
@@ -49,11 +54,13 @@ class OrderStatusFragment : Fragment() {
     }
 
     fun resolveStatus(status: String){
+        Log.d("Status recebido", status)
         when(status){
+            "Enviado" -> changeStatusToSent()
             "Agendado" -> changeStatusToScheduled()
-            "Peças coletadas" -> changeStatusToPickedUp()
+            "Transportando" -> changeStatusToPickedUp()
             "Lavando" -> changeStatusToWashing()
-            else -> changeStatusToDelivered()
+            "Entregue" -> changeStatusToDelivered()
         }
     }
 
@@ -93,6 +100,17 @@ class OrderStatusFragment : Fragment() {
     private fun changeStatusToDelivered(){
         bgStatusDelivered.setBackgroundResource(R.drawable.bg_entregue)
         iconStatusDelivered.setColorFilter(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.main_blue
+            ),
+            android.graphics.PorterDuff.Mode.SRC_IN
+        );
+    }
+
+    private fun changeStatusToSent(){
+        bgStatusSent.setBackgroundResource(R.drawable.bg_enviado)
+        iconStatusSent.setColorFilter(
             ContextCompat.getColor(
                 requireContext(),
                 R.color.main_blue
